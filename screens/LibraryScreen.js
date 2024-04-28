@@ -1,4 +1,5 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { ScrollView } from 'react-native-virtualized-view'
 import React, { useEffect, useState } from "react";
 import { Fonts, Colors, Spacing } from "../config/index.js";
 import {
@@ -8,8 +9,11 @@ import {
 import { Linking, Pressable, Image} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useNavigation } from '@react-navigation/native';
 
 const LibraryScreen = () => {
+    const navigation = useNavigation();
+
   const [userProfile, setUserProfile] = useState([]);
 
   const getProfile = async () => {
@@ -402,7 +406,7 @@ const LibraryScreen = () => {
               style={{
                 alignItems: "center",
                 flexDirection: "row",
-              }}
+              }} onPress={() => navigation.navigate("AllPlaylists")}
             >
               <Text
                 style={{

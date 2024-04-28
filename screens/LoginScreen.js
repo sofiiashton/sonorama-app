@@ -1,40 +1,41 @@
 import { StyleSheet, Text, SafeAreaView, View, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import React, {useEffect} from "react";
-import { useFonts } from 'expo-font';
-import { Fonts, Colors, Spacing} from "../config/index.js";
-import * as AppAuth from "expo-app-auth"
+import React, { useEffect } from "react";
+import { useFonts } from "expo-font";
+import { Fonts, Colors, Spacing } from "../config/index.js";
+import * as AppAuth from "expo-app-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "react-native";
 
 const LoginScreen = () => {
   const navigation = useNavigation();
   useEffect(() => {
     const checkTokenValidity = async () => {
-        const accessToken = await AsyncStorage.getItem("token");
-        const expirationDate = await AsyncStorage.getItem("expirationDate");
-        console.log("access token: ", accessToken);
-        console.log("exp date:", expirationDate);
+      const accessToken = await AsyncStorage.getItem("token");
+      const expirationDate = await AsyncStorage.getItem("expirationDate");
+      console.log("access token: ", accessToken);
+      console.log("exp date:", expirationDate);
 
-        if(accessToken && expirationDate) {
-            const currentTime = Date.now();
-            if(currentTime < parseInt(expirationDate)) {
-                // token is still valid
-                navigation.replace("Main");
-            } else {
-                // token is expired, remove it from async storage
-                AsyncStorage.removeItem("token");
-                AsyncStorage.removeItem("expirationDate");
-            }
+      if (accessToken && expirationDate) {
+        const currentTime = Date.now();
+        if (currentTime < parseInt(expirationDate)) {
+          // token is still valid
+          navigation.replace("Main");
+        } else {
+          // token is expired, remove it from async storage
+          AsyncStorage.removeItem("token");
+          AsyncStorage.removeItem("expirationDate");
         }
-    }
+      }
+    };
 
     checkTokenValidity();
-  },[])
-  async function authenticate () {
+  }, []);
+  async function authenticate() {
     const config = {
-      issuer:"https://accounts.spotify.com",
-      clientId:"d066443124f9494da844adfb2b3516c3",
+      issuer: "https://accounts.spotify.com",
+      clientId: "d066443124f9494da844adfb2b3516c3",
       scopes: [
         "user-read-email",
         "user-library-read",
@@ -46,37 +47,42 @@ const LoginScreen = () => {
         "playlist-modify-private",
       ],
       redirectUrl: "exp://localhost:19002/--/spotify-auth-callback",
-    }
+    };
     const result = await AppAuth.authAsync(config);
     console.log(result);
-    
-    if(result.accessToken) {
-        const expirationDate = new Date(result.accessTokenExpirationDate).getTime();
-        AsyncStorage.setItem("token",result.accessToken);
-        AsyncStorage.setItem("expirationDate",expirationDate.toString());
-        navigation.navigate("Main");
+
+    if (result.accessToken) {
+      const expirationDate = new Date(
+        result.accessTokenExpirationDate
+      ).getTime();
+      AsyncStorage.setItem("token", result.accessToken);
+      AsyncStorage.setItem("expirationDate", expirationDate.toString());
+      navigation.navigate("Main");
     }
   }
 
   const [fontsLoaded] = useFonts({
-    ProximaNovaRegular: require('../assets/fonts/ProximaNovaRegular.otf'),
-    ProximaNovaSemibold: require('../assets/fonts/ProximaNovaSemibold.otf'),
+    ProximaNovaRegular: require("../assets/fonts/ProximaNovaRegular.otf"),
+    ProximaNovaSemibold: require("../assets/fonts/ProximaNovaSemibold.otf"),
   });
 
   return (
     <SafeAreaView
       style={{
         backgroundColor: "white",
-        flex: 1
+        flex: 1,
       }}
     >
-      <View style={{ height: 80, width: 300, justifyContent: "center" }} />
-      <Entypo
-        style={{ textAlign: "center" }}
-        name="spotify"
-        size={184}
-        color="orange"
-      />
+      <View style={{ justifyContent: "center", marginTop: 124, height: 200 }}>
+        <Image
+          source={require("../assets/img/sonorama-logo.png")}
+          style={{
+            width: "100%",
+            height: "100%",
+            resizeMode: "contain",
+          }}
+        />
+      </View>
 
       <Text
         style={{
@@ -86,7 +92,8 @@ const LoginScreen = () => {
           fontFamily: Fonts.screenTitle.fontFamily,
           marginTop: 56,
           textAlign: "center",
-        }}>
+        }}
+      >
         Welcome to Sonorama!
       </Text>
 
@@ -97,23 +104,23 @@ const LoginScreen = () => {
           textAlign: "center",
           marginTop: 16,
           marginLeft: 36,
-          marginRight: 36
+          marginRight: 36,
         }}
       >
         An application for discovering music and generating playlists catered to
         your mood and tastes.
       </Text>
 
-      <View style={{ height: 80 }} />
+      <View style={{ marginTop: 178 }} />
       <Pressable
         onPress={authenticate}
         style={{
           backgroundColor: Colors.spotifyButtonFill,
           borderColor: Colors.spotifyButtonStroke,
-          borderWidth:1,
+          borderWidth: 1,
           textAlign: "center",
-          fontFamily: Fonts.button.fontFamily,
-          fontSize: Fonts.button.fontSize,
+          fontFamily: Fonts.spotifyButton.fontFamily,
+          fontSize: Fonts.spotifyButton.fontSize,
           paddingTop: 12,
           paddingBottom: 12,
           marginLeft: "auto",
@@ -122,7 +129,7 @@ const LoginScreen = () => {
           borderRadius: 10,
           alignItems: "center",
           justifyContent: "center",
-          flexDirection: "row"
+          flexDirection: "row",
         }}
       >
         <Entypo
@@ -135,7 +142,7 @@ const LoginScreen = () => {
           style={{
             color: "white",
             fontFamily: Fonts.spotifyButton.fontFamily,
-            marginLeft: 10
+            marginLeft: 10,
           }}
         >
           Sign in with Spotify

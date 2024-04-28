@@ -2,10 +2,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import LibraryScreen from "./screens/LibraryScreen";
+import AllPlaylistsScreen from "./screens/AllPlaylistsScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import { HomeFilled, HomeRegular, LibraryFilled, LibraryRegular, SettingsFilled, SettingsRegular} from "@fluentui/react-native-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import SettingsScreen from "./screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -82,6 +83,7 @@ function Navigation(){
             <Stack.Navigator>
                 <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="Main" component={BottomTabs} options={{headerShown:false}}/>
+                <Stack.Screen name="AllPlaylists" component={AllPlaylistsScreen} options={{headerShown:false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
