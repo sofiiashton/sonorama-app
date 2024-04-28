@@ -1,10 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./screens/HomeScreen";
-import ProfileScreen from "./screens/ProfileScreen";
 import LoginScreen from "./screens/LoginScreen";
-import { HomeFilled, HomeRegular, PersonFilled, PersonRegular} from "@fluentui/react-native-icons";
+import LibraryScreen from "./screens/LibraryScreen";
+import { HomeFilled, HomeRegular, LibraryFilled, LibraryRegular, SettingsFilled, SettingsRegular} from "@fluentui/react-native-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import SettingsScreen from "./screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ function BottomTabs() {
         backgroundColor:"white",
         position:"absolute",
         borderTopColor:"rgba(0,0,0,0.05)",
+        borderTopWidth: 1,
         paddingTop:18,
         paddingBottom:42
       }
@@ -25,7 +27,9 @@ function BottomTabs() {
         options={{
           tabBarLabel: "Home",
           headerShown: false,
-          tabBarLabelStyle: { color: "white" },
+          tabBarShowLabel: false,
+        //   tabBarLabelStyle: { color: "black" },
+        //   tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ focused }) =>
             focused ? (
               <HomeFilled color="black"/>
@@ -34,18 +38,36 @@ function BottomTabs() {
             ),
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
+        <Tab.Screen
+        name="Library"
+        component={LibraryScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Library",
           headerShown: false,
-          tabBarLabelStyle: { color: "white" },
+          tabBarShowLabel: false,
+        //   tabBarLabelStyle: { color: "black" },
+        //   tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <PersonFilled color="black"/>
+              <LibraryFilled color="black"/>
             ) : (
-              <PersonRegular color="black"/>
+              <LibraryRegular color="black"/>
+            ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: "Settings",
+          headerShown: false,
+          tabBarShowLabel: false,
+        //   tabBarLabelStyle: { color: "black" },
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <SettingsFilled color="black"/>
+            ) : (
+              <SettingsRegular color="black"/>
             ),
         }}
       />

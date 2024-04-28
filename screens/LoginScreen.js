@@ -134,7 +134,7 @@ const LoginScreen = () => {
         <Text
           style={{
             color: "white",
-            fontFamily: Fonts.button.fontFamily,
+            fontFamily: Fonts.spotifyButton.fontFamily,
             marginLeft: 10
           }}
         >

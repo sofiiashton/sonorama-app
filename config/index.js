@@ -11,6 +11,8 @@ export const Colors = {
     spotifyButtonStroke: "#8FF2B3",
     cardBackround: "rgba(238, 141, 27, 0.05)",
     cardStroke: "rgba(118, 79, 33, 0.1)",
+    blueCardBackground: "rgba(25, 45, 229, 0.05)",
+    blueCardStroke: "rgba(0, 0, 0, 0.1)",
     placeholderBackground: "#F2F1F0",
     placeholderText: "rgba(0, 0, 0, 0.4)",
     optionSelectedFill: "#FADDBB",
@@ -34,46 +36,75 @@ export const Colors = {
    export const Fonts = {
     baseFont: {
         fontSize: 16,
-        fontWeight: 500,
         fontFamily: "ProximaNovaSemibold"
     },
     screenTitle: {
         fontSize: 24,
-        letterSpacing: 10,
-        fontFamily: "ProximaNovaRegular",
+        fontFamily: "ProximaNovaSemibold",
     },
     screenTitleSecondary: {
         fontSize: 22,
-        fontWeight: 500,
-        fontFamily: "ProximaNova",
+        fontFamily: "ProximaNovaRegular",
         letterSpacing: -3, 
     },
     sectionTitle: {
         fontSize: 21,
-        fontWeight: 600,
-        fontFamily: "ProximaNova",
+        fontFamily: "ProximaNovaSemibold",
     },
     cardTitle: {
         fontSize: 17,
-        fontWeight: 600,
-        fontFamily: "ProximaNova",
+        fontFamily: "ProximaNovaSemibold",
     },
     cardParagraph: {
         fontSize: 13,
-        fontWeight: 500,
-        fontFamily: "ProximaNova",
+        fontFamily: "ProximaNovaRegular",
     },
     tooltip: {
         fontSize: 13,
-        fontWeight: 500,
-        fontFamily: "ProximaNova",
+        fontFamily: "ProximaNovaRegular",
     },
-    button: {
+    spotifyButton: {
         fontSize: 17,
         fontFamily: "ProximaNovaSemibold",
-        fontWeight:600,
+    },
+    button: {
+        fontSize: 15,
+        fontFamily: "ProximaNovaSemibold",
     }
    }
+
+export const Language = {
+    english: {
+        loginWelcomeTitle: "Welcome to Sonorama!",
+        loginWelcomeParagraph: "An application for discovering music and generating playlists catered to your mood and tastes.",
+        loginButton: "Log in with Spotify",
+        homeGreeting: {
+            goodMorning: "Good morning,",
+            goodAfternoon: "Good afternoon,",
+            goodEvening: "Good evening,",
+        },
+        homeForYouTitle: "For you",
+        homeForYouParagraph: "A daily playlist based on your current obsessions.",
+        homePlaylistGenTitle: "Playlist Generator",
+        homePlaylistGenParagraph: "Get playlists based on your mood and preferences.",
+        homePlaylistGenButton: "Start generating",
+    },
+    ukrainian: {
+        loginWelcomeTitle: "Welcome to Sonorama!",
+        loginWelcomeParagraph: "Мобільний додаток для знаходження нової музики та створення плейлістів під ваші смаки та настрій.",
+        loginButton: "Увійти з Spotify",
+        homeGreeting: {
+            goodMorning: "Доброго ранку,",
+            goodAfternoon: "Доброго дня,",
+            goodEvening: "Доброго вечора,",
+        },
+        homeForYouTitle: "Для вас",
+        homeForYouParagraph: "Щоденний плейліст за вашими улюбленими треками.",
+        homePlaylistGenTitle: "Генератор плейлістів",
+        homePlaylistGenParagraph: "Згенеруйте плейліст за вашим настроєм та вподобаннями.",
+        homePlaylistGenButton: "Почати",
+    }
+}
    
 //    export const Theme = {
 //      light: {
