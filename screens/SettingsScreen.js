@@ -1,10 +1,23 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  Linking,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Fonts, Colors } from "../config/index.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { OpenRegular } from "@fluentui/react-native-icons";
+import {
+  OpenRegular,
+  GlobeRegular,
+  ColorRegular,
+} from "@fluentui/react-native-icons";
+import { Picker } from "@react-native-picker/picker";
 
-const SettingsScreen = () => {
+const SettingsScreen = ({navigation}) => {
+  const selectedLanguage = "";
   const [userProfile, setUserProfile] = useState(null);
 
   const getProfile = async () => {
@@ -26,9 +39,27 @@ const SettingsScreen = () => {
     getProfile();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      navigation.navigate("Login");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const username = userProfile ? userProfile.display_name : "";
   const userEmail = userProfile ? userProfile.email : "";
   const profilePicture = userProfile ? userProfile.images[0]?.url : null;
+  const userId = userProfile ? userProfile.id.toString() : "";
+
+  const openInSpotify = () => {
+    const spotifyDeepLink = `https://open.spotify.com/user/${userId}`;
+
+    Linking.openURL(spotifyDeepLink).catch((err) =>
+      console.error("Failed to open link:", err)
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -129,6 +160,7 @@ const SettingsScreen = () => {
                 flexDirection: "row",
                 alignItems: "center",
               }}
+              onPress={openInSpotify}
             >
               <OpenRegular color={Colors.textSeeAll} width={17} />
               <Text
@@ -154,7 +186,7 @@ const SettingsScreen = () => {
             paddingTop: 12,
             paddingBottom: 12,
             marginTop: 18,
-          }}
+          }} onPress={handleLogout}
         >
           <Text
             style={{
@@ -184,6 +216,94 @@ const SettingsScreen = () => {
         >
           Application Settings
         </Text>
+
+        <View
+          style={{
+            marginTop: 30,
+          }}
+        >
+          <View
+            style={{
+              borderBottomColor: Colors.stroke,
+              borderBottomWidth: 1,
+            }}
+          >
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginBottom: 16,
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <GlobeRegular color={Colors.settingsIcons} width={20} />
+                <Text
+                  style={{
+                    fontFamily: Fonts.cardTitle.fontFamily,
+                    fontSize: Fonts.cardTitle.fontSize,
+                    marginLeft: 12,
+                  }}
+                >
+                  Language
+                </Text>
+              </View>
+
+              {/* <Picker
+                selectedValue={selectedLanguage}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedLanguage(itemValue)
+                }
+              >
+                <Picker.Item label="English" value="eng" />
+                <Picker.Item label="Ukrainian" value="ukr" />
+              </Picker> */}
+            </View>
+          </View>
+
+          <View>
+            <View
+              style={{
+                justifyContent: "space-between",
+                marginTop: 16,
+                marginBottom: 16,
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <ColorRegular color={Colors.settingsIcons} width={20} />
+                <Text
+                  style={{
+                    fontFamily: Fonts.cardTitle.fontFamily,
+                    fontSize: Fonts.cardTitle.fontSize,
+                    marginLeft: 12,
+                  }}
+                >
+                  Theme
+                </Text>
+              </View>
+
+              {/* <Picker
+                selectedValue={selectedLanguage}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedLanguage(itemValue)
+                }
+              >
+                <Picker.Item label="English" value="eng" />
+                <Picker.Item label="Ukrainian" value="ukr" />
+              </Picker> */}
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );

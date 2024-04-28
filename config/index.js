@@ -33,6 +33,7 @@ export const Colors = {
   logOutFill: "rgba(202, 32, 32, 0.1)",
   logOutStroke: "rgba(202, 32, 32, 0.2)", 
   logOutText: "#CA2020",
+  settingsIcons: "rgba(0, 0, 0, 0.2)",
 };
 
 export const Spacing = {
