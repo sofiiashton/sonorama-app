@@ -5,7 +5,7 @@ import {
   ArrowSortRegular,
   ArrowRightRegular,
 } from "@fluentui/react-native-icons";
-import { Pressable, Image } from "react-native";
+import { Linking, Pressable, Image} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
@@ -91,11 +91,23 @@ const LibraryScreen = () => {
 
   // render each playlist
   const renderItem = ({ item }) => {
+    const openPlaylistInSpotify = () => {
+      const playlistURI = item.uri;
+      const playlistID = playlistURI.substring("spotify:playlist:".length);
+
+      const spotifyDeepLink = `https://open.spotify.com/playlist/${playlistID}`;
+
+      Linking.openURL(spotifyDeepLink).catch((err) =>
+        console.error("Failed to open link:", err)
+      );
+    };
+  
     return (
       <Pressable
         style={{
           marginRight: 10,
         }}
+        onPress={openPlaylistInSpotify}
       >
         <Image
           style={{
