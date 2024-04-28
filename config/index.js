@@ -27,6 +27,12 @@ export const Colors = {
   textTooltip: "#573D1F",
   textSeeAll: "rgba(0, 0, 0, 0.2)",
   iconTooltip: "#rgba(87, 61, 31, 0.4)",
+  openInSpotifyFill: "#F2F1F0",
+  openInSpotifyStroke: "#E8E8E8",
+  openInSpotifyIcon: "rgba(0, 0, 0, 0.2)",
+  logOutFill: "rgba(202, 32, 32, 0.1)",
+  logOutStroke: "rgba(202, 32, 32, 0.2)", 
+  logOutText: "#CA2020",
 };
 
 export const Spacing = {
@@ -76,6 +82,10 @@ export const Fonts = {
     fontSize: 15,
     fontFamily: "ProximaNovaSemibold",
   },
+  openInSpotify: {
+    fontSize: 13,
+    fontFamily: "ProximaNovaSemibold",
+  }
 };
 
 export const Language = {
