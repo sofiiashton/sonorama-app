@@ -1,18 +1,18 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { ScrollView } from 'react-native-virtualized-view'
+import { ScrollView } from "react-native-virtualized-view";
 import React, { useEffect, useState } from "react";
 import { Fonts, Colors, Spacing } from "../config/index.js";
 import {
   ArrowSortRegular,
   ArrowRightRegular,
 } from "@fluentui/react-native-icons";
-import { Linking, Pressable, Image} from "react-native";
+import { Linking, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 const LibraryScreen = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
   const [userProfile, setUserProfile] = useState([]);
 
@@ -105,7 +105,7 @@ const LibraryScreen = () => {
         console.error("Failed to open link:", err)
       );
     };
-  
+
     return (
       <Pressable
         style={{
@@ -113,14 +113,34 @@ const LibraryScreen = () => {
         }}
         onPress={openPlaylistInSpotify}
       >
-        <Image
+        {/* <Image
           style={{
             height: 145,
             width: 145,
             borderRadius: 10,
           }}
           source={{ uri: item.images[0].url }}
-        />
+          
+        /> */}
+        {item.images && item.images.length > 0 ? (
+          <Image
+            style={{
+              height: 145,
+              width: 145,
+              borderRadius: 10,
+            }}
+            source={{ uri: item.images[0].url }}
+          />
+        ) : (
+          <Image
+            style={{
+              height: 145,
+              width: 145,
+              borderRadius: 10,
+              backgroundColor: Colors.optionDisabledFill,
+            }}
+          />
+        )}
         <Text
           numberOfLines={1}
           style={{
@@ -406,7 +426,8 @@ const LibraryScreen = () => {
               style={{
                 alignItems: "center",
                 flexDirection: "row",
-              }} onPress={() => navigation.navigate("AllPlaylists")}
+              }}
+              onPress={() => navigation.navigate("AllPlaylists")}
             >
               <Text
                 style={{

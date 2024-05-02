@@ -118,14 +118,33 @@ const AllPlaylistsScreen = ({ navigation }) => {
         }}
         onPress={openPlaylistInSpotify}
       >
-        <Image
+        {/* <Image
           style={{
             height: 163,
             width: 161,
             borderRadius: 10,
           }}
           source={{ uri: item.images[0].url }}
-        />
+        /> */}
+        {item.images && item.images.length > 0 ? (
+          <Image
+            style={{
+              height: 163,
+              width: 161,
+              borderRadius: 10,
+            }}
+            source={{ uri: item.images[0].url }}
+          />
+        ) : (
+          <Image
+            style={{
+              height: 163,
+              width: 161,
+              borderRadius: 10,
+              backgroundColor: Colors.optionDisabledFill, // Set a grey background color for the default image
+            }}
+          />
+        )}
         <Text
           numberOfLines={1}
           style={{
@@ -306,18 +325,17 @@ const AllPlaylistsScreen = ({ navigation }) => {
 
       <FlatList
         numColumns={2}
-        columnWrapperStyle={{justifyContent: 'space-between'}}
+        columnWrapperStyle={{ justifyContent: "space-between" }}
         data={
-          sortBy === "Recent"
-            ? recentPlaylists
-            : sortPlaylists(allPlaylists)
+          sortBy === "Recent" ? recentPlaylists : sortPlaylists(allPlaylists)
         }
         renderItem={renderItem}
         style={{
-            marginLeft: 24,
-            marginRight: 24,
-            marginTop: 30,
-          }}
+          marginLeft: 24,
+          marginRight: 24,
+          marginTop: 30,
+          marginBottom: 40,
+        }}
       />
     </View>
   );

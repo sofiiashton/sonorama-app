@@ -4,6 +4,7 @@ import LoginScreen from "./screens/LoginScreen";
 import LibraryScreen from "./screens/LibraryScreen";
 import AllPlaylistsScreen from "./screens/AllPlaylistsScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import SetMoodsScreen from "./screens/SetMoodsScreen";
 import { HomeFilled, HomeRegular, LibraryFilled, LibraryRegular, SettingsFilled, SettingsRegular} from "@fluentui/react-native-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -77,6 +78,7 @@ function BottomTabs() {
 }
 
 const Stack = createNativeStackNavigator();
+
 function Navigation(){
     return (
         <NavigationContainer>
@@ -84,6 +86,7 @@ function Navigation(){
                 <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="Main" component={BottomTabs} options={{headerShown:false}}/>
                 <Stack.Screen name="AllPlaylists" component={AllPlaylistsScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="SetMoods" component={SetMoodsScreen} options={{headerShown:false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

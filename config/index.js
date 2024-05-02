@@ -27,6 +27,8 @@ export const Colors = {
   textTooltip: "#573D1F",
   textSeeAll: "rgba(0, 0, 0, 0.2)",
   iconTooltip: "#rgba(87, 61, 31, 0.4)",
+  tooltipFill: "rgba(238, 141, 27, 0.05)",
+  tooltipStroke: "rgba(118, 79, 33, 0.1)",
   openInSpotifyFill: "#F2F1F0",
   openInSpotifyStroke: "#E8E8E8",
   openInSpotifyIcon: "rgba(0, 0, 0, 0.2)",

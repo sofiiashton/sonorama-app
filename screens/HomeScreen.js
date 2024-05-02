@@ -3,8 +3,11 @@ import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Fonts, Colors, Spacing } from "../config/index.js";
 import { Pressable, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const [userProfile, setUserProfile] = useState([]);
 
   const greetingMsg = () => {
@@ -219,7 +222,7 @@ const HomeScreen = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: 26,
-            }}>
+            }} onPress={() => navigation.navigate("SetMoods")}>
                 <Text style={{
                     fontFamily: Fonts.button.fontFamily,
                     fontSize: Fonts.button.fontSize,
