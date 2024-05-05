@@ -8,6 +8,8 @@ import SetMoodsScreen from "./screens/SetMoodsScreen";
 import { HomeFilled, HomeRegular, LibraryFilled, LibraryRegular, SettingsFilled, SettingsRegular} from "@fluentui/react-native-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import SetGenresScreen from "./screens/SetGenresScreen";
+import SetPlaylistSettingsScreen from "./screens/SetPlaylistSettingsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -87,6 +89,8 @@ function Navigation(){
                 <Stack.Screen name="Main" component={BottomTabs} options={{headerShown:false}}/>
                 <Stack.Screen name="AllPlaylists" component={AllPlaylistsScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="SetMoods" component={SetMoodsScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="SetGenres" component={SetGenresScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="SetPlaylistSettings" component={SetPlaylistSettingsScreen} options={{headerShown:false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

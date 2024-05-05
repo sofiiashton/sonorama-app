@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { Fonts, Colors, Spacing } from "../config/index.js";
 import {
   ArrowLeftRegular,
+  ArrowRightRegular,
   QuestionCircleRegular,
 } from "@fluentui/react-native-icons";
 import { Linking, Pressable } from "react-native";
@@ -39,6 +40,43 @@ const SetMoodsScreen = ({ navigation }) => {
   useEffect(() => {
     getProfile();
   }, []);
+
+  const [selectedMoods, setSelectedMoods] = useState([]);
+
+  const toggleMood = (mood) => {
+    if (selectedMoods.includes(mood)) {
+      setSelectedMoods(selectedMoods.filter((item) => item !== mood));
+    } else {
+      if (selectedMoods.length < 5) {
+        setSelectedMoods([...selectedMoods, mood]);
+      } else {
+        // You can display a message or handle the case where the user tries to select more than 5 moods
+      }
+    }
+  };
+
+  const renderButton = (mood) => {
+    const isSelected = selectedMoods.includes(mood);
+    return (
+      <Pressable
+        key={mood}
+        style={[isSelected ? styles.selectedMood : styles.unselectedMood]}
+        onPress={() => toggleMood(mood)}
+      >
+        <Text style={[isSelected ? {
+            fontFamily: Fonts.baseFont.fontFamily,
+            color: Colors.optionSelectedText,
+          } : {
+            fontFamily: Fonts.baseFont.fontFamily,
+            color: Colors.optionDisabledText,
+          }]}>{mood}</Text>
+      </Pressable>
+    );
+  };
+
+  useEffect(() => {
+    console.log("Selected Moods:", selectedMoods);
+  }, [selectedMoods]);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -138,10 +176,13 @@ const SetMoodsScreen = ({ navigation }) => {
           marginRight: 24,
           marginTop: 20,
           height: 160,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          alignItems: "center",
         }}
       >
         <Image
-          source={require("../assets/img/no-playlists.png")}
+          source={require("../assets/img/generate-playlist.png")}
           style={{
             width: "100%",
             height: "100%",
@@ -149,9 +190,95 @@ const SetMoodsScreen = ({ navigation }) => {
           }}
         ></Image>
       </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          marginTop: 34,
+          marginLeft: 24,
+          marginRight: 24,
+        }}
+      >
+        {renderButton("Melancholic")}
+        {renderButton("Acoustic")}
+        {renderButton("Energetic")}
+        {renderButton("Triumphant")}
+        {renderButton("Soothing")}
+        {renderButton("Chill")}
+        {renderButton("Feel-good")}
+        {renderButton("Instrumental")}
+      </View>
+
+      <View
+        style={{
+          marginLeft: 24,
+          marginRight: 24,
+          marginTop: 34,
+        }}
+      >
+        <Pressable
+          onPress={() => {
+            navigation.navigate('SetGenres', { selectedMoods: selectedMoods });
+          }}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "row",
+            backgroundColor: Colors.buttonMainFill,
+            borderColor: Colors.buttonMainStroke,
+            borderRadius: 10,
+            paddingTop: 12,
+            paddingBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontFamily: Fonts.button.fontFamily,
+              fontSize: Fonts.button.fontSize,
+              marginRight: 4,
+            }}
+          >
+            Continue
+          </Text>
+          <ArrowRightRegular width={16} color="white" />
+        </Pressable>
+      </View>
     </View>
   );
 };
 
 export default SetMoodsScreen;
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  selectedMood: {
+    backgroundColor: Colors.optionSelectedFill,
+    marginRight: 6,
+    marginBottom: 6,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderWidth: 1,
+    borderColor: Colors.optionSelectedStroke,
+    borderRadius: 8,
+    fontFamily: Fonts.baseFont.fontFamily,
+    fontSize: Fonts.baseFont.fontSize,
+    color: Colors.optionSelectedText,
+  },
+  unselectedMood: {
+    backgroundColor: Colors.optionDisabledFill,
+    marginRight: 6,
+    marginBottom: 6,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingTop: 8,
+    paddingBottom: 8,
+    borderWidth: 1,
+    borderColor: Colors.optionDisabledStroke,
+    borderRadius: 8,
+    fontFamily: Fonts.baseFont.fontFamily,
+    fontSize: Fonts.baseFont.fontSize,
+    color: Colors.optionDisabledText,
+  },
+});
