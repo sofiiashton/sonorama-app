@@ -10,6 +10,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import SetGenresScreen from "./screens/SetGenresScreen";
 import SetPlaylistSettingsScreen from "./screens/SetPlaylistSettingsScreen";
+import PlaylistCreatedScreen from "./screens/PlaylistCreatedScreen";
+import ForYouScreen from "./screens/ForYouScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -91,6 +93,8 @@ function Navigation(){
                 <Stack.Screen name="SetMoods" component={SetMoodsScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="SetGenres" component={SetGenresScreen} options={{headerShown:false}}/>
                 <Stack.Screen name="SetPlaylistSettings" component={SetPlaylistSettingsScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="PlaylistCreated" component={PlaylistCreatedScreen} options={{headerShown:false}}/>
+                <Stack.Screen name="ForYou" component={ForYouScreen} options={{headerShown:false}}/>
             </Stack.Navigator>
         </NavigationContainer>
     )

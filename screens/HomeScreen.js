@@ -95,7 +95,7 @@ const HomeScreen = () => {
           marginRight: 24,
         }}
       >
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate("ForYou")}>
           <View
             style={{
               height: 160,

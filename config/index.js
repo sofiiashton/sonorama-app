@@ -88,7 +88,15 @@ export const Fonts = {
   openInSpotify: {
     fontSize: 13,
     fontFamily: "ProximaNovaSemibold",
-  }
+  },
+  trackTitle: {
+    fontSize:13,
+    fontFamily: "ProximaNovaSemibold",
+  },
+  trackArtist: {
+    fontSize:13,
+    fontFamily: "ProximaNovaSemibold",
+  },
 };
 
 export const Language = {

@@ -20,6 +20,7 @@ import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
 import CheckBox from "@react-native-community/checkbox";
+import LoadingSpinner from "../assets/loading.gif";
 
 const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   const moodParameters = {
@@ -252,6 +253,8 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
       const userProfile = await userProfileResponse.json();
       const userId = userProfile.id;
 
+      console.log("Checkbox", toggleCheckBox);
+
       const createPlaylistResponse = await fetch(
         `https://api.spotify.com/v1/users/${userId}/playlists`,
         {
@@ -262,8 +265,8 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           },
           body: JSON.stringify({
             name: playlistName,
-            public: !toggleCheckBox,
             description: "Playlist created by Sonorama",
+            public: !toggleCheckBox,
           }),
         }
       );
@@ -274,31 +277,6 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
 
       const createdPlaylist = await createPlaylistResponse.json();
       const playlistId = createdPlaylist.id;
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("file", {
-          uri: image,
-          name: "image.jpg",
-          type: "image/jpeg",
-        });
-
-        const uploadImageResponse = await fetch(
-          `https://api.spotify.com/v1/playlists/${playlistId}/images`,
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "image/jpeg",
-            },
-            body: formData,
-          }
-        );
-
-        // if (!uploadImageResponse.ok) {
-        //   throw new Error("Failed to upload image");
-        // }
-      }
 
       const addTracksResponse = await fetch(
         `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
@@ -317,10 +295,13 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
       }
 
       console.log("Playlist created with ID:", playlistId);
+      navigation.navigate('PlaylistCreated', { playlistId })
     } catch (error) {
       console.error("Error creating playlist:", error.message);
     }
   };
+
+  const [isLoading, setLoading] = useState(false); 
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -559,15 +540,17 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         }}
       >
         <Pressable
-          onPress={() => {
-            createPlaylistFromRecommendations(
+          onPress={async () => {
+            setLoading(true);
+            await createPlaylistFromRecommendations(
               selectedMoods,
               selectedGenres,
               playlistSize,
               playlistName,
               toggleCheckBox,
-              image,
+              image
             );
+            setLoading(false);
           }}
           style={{
             backgroundColor: Colors.buttonMainFill,
@@ -579,15 +562,19 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             justifyContent: "center",
           }}
         >
-          <Text
-            style={{
-              color: "white",
-              fontFamily: Fonts.button.fontFamily,
-              fontSize: Fonts.button.fontSize,
-            }}
-          >
-            Generate playlist
-          </Text>
+          {isLoading ? (
+            <Image source={LoadingSpinner} style={{ width: 24, height: 24 }} />
+          ) : (
+            <Text
+              style={{
+                color: "white",
+                fontFamily: Fonts.button.fontFamily,
+                fontSize: Fonts.button.fontSize,
+              }}
+            >
+              Generate playlist
+            </Text>
+          )}
         </Pressable>
       </View>
     </View>

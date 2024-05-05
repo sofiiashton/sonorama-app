@@ -93,7 +93,6 @@ const LibraryScreen = () => {
     return playlists;
   };
 
-  // render each playlist
   const renderItem = ({ item }) => {
     const openPlaylistInSpotify = () => {
       const playlistURI = item.uri;
