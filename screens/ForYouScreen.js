@@ -12,9 +12,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ArrowLeftRegular } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import { ScrollView } from "react-native-virtualized-view";
+import { initDatabase, addPlaylist, getPlaylists } from "../Database.js";
 
 const ForYouScreen = ({ navigation, route }) => {
   const [userProfile, setUserProfile] = useState([]);
+  const [initialized, setInitialized] = useState(false);
 
   const getProfile = async () => {
     const accessToken = await AsyncStorage.getItem("token");
@@ -38,7 +40,6 @@ const ForYouScreen = ({ navigation, route }) => {
 
   const [recommendations, setRecommendations] = useState(null);
 
-  // Function to fetch the user's top artists
   const fetchTopArtists = async () => {
     try {
       const accessToken = await AsyncStorage.getItem("token");
@@ -136,6 +137,11 @@ const ForYouScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const createPlaylistInSpotify = async () => {
+    if (!initialized) {
+        // Initialize the database first
+        initDatabase();
+        setInitialized(true);
+      }
     try {
       setLoading(true);
       const accessToken = await AsyncStorage.getItem("token");
@@ -163,6 +169,23 @@ const ForYouScreen = ({ navigation, route }) => {
       const playlistData = await createPlaylistResponse.json();
       const playlistId = playlistData.id;
 
+      // Save playlist details to local database
+      const playlist = {
+        name: "For You Mix",
+        url: `https://open.spotify.com/playlist/${playlistId}`,
+        cover: "cover_image_url_here", // You may need to fetch this from Spotify
+        privacy: "private", // Assuming it's always private
+        description: "Created by Sonorama",
+        tracks: recommendations.map((track) => ({
+          name: track.name,
+          artist: track.artists.map((artist) => artist.name).join(", "),
+          duration: formatDuration(track.duration_ms),
+          url: track.external_urls.spotify,
+        })),
+      };
+
+      addPlaylist(playlist); // Save playlist details to the database
+
       const trackUris = recommendations.map((track) => track.uri);
       const addTracksResponse = await fetch(
         `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
@@ -181,7 +204,7 @@ const ForYouScreen = ({ navigation, route }) => {
       if (!addTracksResponse.ok) {
         throw new Error("Failed to add tracks to playlist");
       }
-      
+
       openPlaylistInSpotify(playlistId);
     } catch (error) {
       console.error("Error creating playlist:", error.message);

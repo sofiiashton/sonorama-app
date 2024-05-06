@@ -230,12 +230,12 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             </Text>
             <View
               style={{
-                height: 420,
+                height: 418,
               }}
             >
               <ScrollView
                 style={{
-                  marginTop: 30,
+                  marginTop: 20,
                   height: 420,
                   borderWidth: 1,
                   borderColor: Colors.stroke,

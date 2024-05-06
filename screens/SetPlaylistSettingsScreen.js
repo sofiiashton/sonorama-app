@@ -21,6 +21,7 @@ import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
 import CheckBox from "@react-native-community/checkbox";
 import LoadingSpinner from "../assets/loading.gif";
+import * as FileSystem from "expo-file-system";
 
 const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   const moodParameters = {
@@ -117,19 +118,27 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   }, []);
 
   const [image, setImage] = useState(null);
+  const [base64Image, setBase64Image] = useState(null);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.05,
+      base64: true,
     });
 
-    console.log(result);
+    console.log("base64:", result.assets[0].base64)
 
     if (!result.canceled) {
+      // const base64Image = result.assets[0].base64; // Assuming result is the ImagePicker result object
+      // const imageSizeInBytes = base64Image.length;
+      // const imageSizeInKB = imageSizeInBytes / 1024; // Convert bytes to kilobytes
+
+      // console.log(imageSizeInKB)
+      setBase64Image(result.assets[0].base64); // Set state with base64 string
+
       setImage(result.assets[0].uri);
     }
   };
@@ -139,7 +148,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
 
   const [playlistSize, setPlaylistSize] = useState(50);
 
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  //   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const generateRecommendations = async (
     selectedMoods,
@@ -227,8 +236,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
     selectedGenres,
     playlistSize,
     playlistName,
-    toggleCheckBox,
-    image
+    base64Image
   ) => {
     try {
       const tracks = await generateRecommendations(
@@ -292,14 +300,30 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         throw new Error("Failed to add tracks to playlist");
       }
 
+    //   const uploadImageResponse = await fetch(
+    //     `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+    //     {
+    //       method: "PUT",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //         "Content-Type": "image/jpeg",
+    //       },
+    //       body: base64Image,
+    //     }
+    //   );
+
+    //   if (!uploadImageResponse.ok) {
+    //     throw new Error("Failed to upload playlist image");
+    //   }
+
       console.log("Playlist created with ID:", playlistId);
-      navigation.navigate('PlaylistCreated', { playlistId })
+      navigation.navigate("PlaylistCreated", { playlistId });
     } catch (error) {
       console.error("Error creating playlist:", error.message);
     }
   };
 
-  const [isLoading, setLoading] = useState(false); 
+  const [isLoading, setLoading] = useState(false);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -347,7 +371,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             fontSize: Fonts.sectionTitle.fontSize,
           }}
         >
-          Give your playlist a name and a cover
+          Give your playlist a name
         </Text>
 
         <Text
@@ -362,7 +386,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         </Text>
       </View>
 
-      <View
+      {/* <View
         style={{
           height: 136,
           width: 340,
@@ -407,7 +431,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             </Text>
           </Pressable>
         )}
-      </View>
+      </View> */}
 
       <View
         style={{
@@ -534,7 +558,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         style={{
           marginLeft: 24,
           marginRight: 24,
-          marginTop: 124,
+          marginTop: 296,
         }}
       >
         <Pressable
@@ -545,8 +569,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
               selectedGenres,
               playlistSize,
               playlistName,
-              toggleCheckBox,
-              image
+              base64Image,
             );
             setLoading(false);
           }}

@@ -10,8 +10,24 @@ import { Linking, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { getPlaylists, initDatabase } from "../Database.js";
 
 const LibraryScreen = () => {
+  const [databasePlaylists, setDatabasePlaylists] = useState([]);
+
+  const getDatabasePlaylists = async () => {
+    try {
+      const playlists = await getPlaylists();
+      setDatabasePlaylists(playlists);
+    } catch (error) {
+      console.error("Error fetching playlists from database:", error);
+    }
+  };
+
+  useEffect(() => {
+    getDatabasePlaylists();
+  }, []);
+
   const navigation = useNavigation();
 
   const [userProfile, setUserProfile] = useState([]);
@@ -36,7 +52,6 @@ const LibraryScreen = () => {
     getProfile();
   }, []);
 
-  // fetch recent playlists
   const [recentPlaylists, setRecentPlaylists] = useState([]);
   const getRecentPlaylists = async () => {
     const accessToken = await AsyncStorage.getItem("token");
@@ -58,7 +73,6 @@ const LibraryScreen = () => {
     getRecentPlaylists();
   }, []);
 
-  // fetch all playlists
   const [allPlaylists, setAllPlaylists] = useState([]);
   const getAllPlaylists = async () => {
     const accessToken = await AsyncStorage.getItem("token");
@@ -80,7 +94,6 @@ const LibraryScreen = () => {
     getAllPlaylists();
   }, []);
 
-  // sort playlists
   const [sortBy, setSortBy] = useState("Recent");
   const sortPlaylists = (playlists) => {
     if (sortBy === "Recent") {
@@ -352,7 +365,7 @@ const LibraryScreen = () => {
             </Pressable>
           </View>
         </View>
-
+        {/* 
         <View
           style={{
             marginLeft: 24,
@@ -396,6 +409,41 @@ const LibraryScreen = () => {
           >
             Use the Playlist Generator to create playlists.
           </Text>
+        </View> */}
+
+        <View style={{
+          marginLeft: 24,
+          marginTop: 24,
+        }}>
+          {databasePlaylists.length > 0 ? (
+            <FlatList
+              horizontal={true}
+              data={databasePlaylists}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+            />
+          ) : (
+            <View style={{ marginLeft: 24 }}>
+              <Image
+                source={require("../assets/img/no-playlists.png")}
+                style={{
+                  width: 145,
+                  height: 145,
+                  resizeMode: "contain",
+                  borderRadius: 10,
+                }}
+              />
+              <Text
+                style={{
+                  fontFamily: Fonts.cardTitle.fontFamily,
+                  fontSize: Fonts.cardTitle.fontSize,
+                  marginTop: 12,
+                }}
+              >
+                You haven't saved any playlists yet
+              </Text>
+            </View>
+          )}
         </View>
 
         <View
