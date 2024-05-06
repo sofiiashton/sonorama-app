@@ -253,8 +253,6 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
       const userProfile = await userProfileResponse.json();
       const userId = userProfile.id;
 
-      console.log("Checkbox", toggleCheckBox);
-
       const createPlaylistResponse = await fetch(
         `https://api.spotify.com/v1/users/${userId}/playlists`,
         {
@@ -266,7 +264,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           body: JSON.stringify({
             name: playlistName,
             description: "Playlist created by Sonorama",
-            public: !toggleCheckBox,
+            public: false,
           }),
         }
       );
@@ -501,7 +499,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         </View>
       </View>
 
-      <View
+      {/* <View
         style={{
           marginLeft: 24,
           marginBottom: 24,
@@ -530,13 +528,13 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         >
           Make playlist private
         </Text>
-      </View>
+      </View> */}
 
       <View
         style={{
           marginLeft: 24,
           marginRight: 24,
-          marginTop: 42,
+          marginTop: 124,
         }}
       >
         <Pressable

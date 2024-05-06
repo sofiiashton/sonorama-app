@@ -93,7 +93,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            flex: 1, // Ensure the container occupies all available width
+            flex: 1,
           }}
         >
           <Image
@@ -109,7 +109,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           <View
             style={{
               marginLeft: 14,
-              flex: 1, // Ensure the container occupies all available width
+              flex: 1,
             }}
           >
             <Text
@@ -118,7 +118,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               style={{
                 fontFamily: Fonts.trackTitle.fontFamily,
                 fontSize: Fonts.trackTitle.fontSize,
-                flex: 1, // Ensure the text can wrap properly
+                flex: 1,
               }}
             >
               {track.name}
@@ -215,6 +215,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
         >
           Playlist created!
         </Text>
+
         {playlistDetails ? (
           <View>
             <Text
