@@ -136,13 +136,22 @@ const ForYouScreen = ({ navigation, route }) => {
 
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (!initialized) {
+      initDatabase();
+      setInitialized(true);
+    }
+  }, []);
+  
+
   const createPlaylistInSpotify = async () => {
     if (!initialized) {
-        // Initialize the database first
+        console.log("initialized:", initialized)
         initDatabase();
         setInitialized(true);
       }
     try {
+        console.log("probably initialized")
       setLoading(true);
       const accessToken = await AsyncStorage.getItem("token");
 
@@ -157,7 +166,7 @@ const ForYouScreen = ({ navigation, route }) => {
           body: JSON.stringify({
             name: "For You Mix",
             description: "Created by Sonorama",
-            public: false,
+            public: true,
           }),
         }
       );
@@ -169,12 +178,16 @@ const ForYouScreen = ({ navigation, route }) => {
       const playlistData = await createPlaylistResponse.json();
       const playlistId = playlistData.id;
 
-      // Save playlist details to local database
+      console.log("from playlistData: ", playlistData)
+
+      const coverImageUrl = playlistData.images.length > 0 ? playlistData.images[0].url : null;
+
+  
       const playlist = {
         name: "For You Mix",
         url: `https://open.spotify.com/playlist/${playlistId}`,
-        cover: "cover_image_url_here", // You may need to fetch this from Spotify
-        privacy: "private", // Assuming it's always private
+        cover: coverImageUrl,
+        privacy: "public", 
         description: "Created by Sonorama",
         tracks: recommendations.map((track) => ({
           name: track.name,
@@ -184,7 +197,7 @@ const ForYouScreen = ({ navigation, route }) => {
         })),
       };
 
-      addPlaylist(playlist); // Save playlist details to the database
+      addPlaylist(playlist); 
 
       const trackUris = recommendations.map((track) => track.uri);
       const addTracksResponse = await fetch(

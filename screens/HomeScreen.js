@@ -4,8 +4,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Fonts, Colors, Spacing } from "../config/index.js";
 import { Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+// import LocalizedStrings from 'react-native-localization';
+// import en from "../locales/en";
 
-const HomeScreen = () => {
+const HomeScreen = () => { 
+
   const navigation = useNavigation();
 
   const [userProfile, setUserProfile] = useState([]);
@@ -149,20 +152,23 @@ const HomeScreen = () => {
         </Pressable>
       </View>
 
-      <View style={{
-        height: 24,
-      }}/>
-
-      <View 
+      <View
         style={{
-            backgroundColor: Colors.cardBackround,
-            borderRadius: 20,
-            borderWidth: 1,
-            borderColor: Colors.cardStroke,
-            marginLeft: 24,
-            marginRight: 24,
-          }}>
-      <Pressable>
+          height: 24,
+        }}
+      />
+
+      <View
+        style={{
+          backgroundColor: Colors.cardBackround,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: Colors.cardStroke,
+          marginLeft: 24,
+          marginRight: 24,
+        }}
+      >
+        <Pressable>
           <View
             style={{
               height: 160,
@@ -204,12 +210,13 @@ const HomeScreen = () => {
                 paddingRight: 20,
               }}
             >
-              Get playlists based on your mood and preferences. 
+              Get playlists based on your mood and preferences.
             </Text>
-            <Pressable style={{
+            <Pressable
+              style={{
                 backgroundColor: Colors.buttonMainFill,
                 borderColor: Colors.buttonMainStroke,
-                borderWidth:1,
+                borderWidth: 1,
                 textAlign: "center",
                 fontFamily: Fonts.button.fontFamily,
                 fontSize: Fonts.button.fontSize,
@@ -222,14 +229,18 @@ const HomeScreen = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: 26,
-            }} onPress={() => navigation.navigate("SetMoods")}>
-                <Text style={{
-                    fontFamily: Fonts.button.fontFamily,
-                    fontSize: Fonts.button.fontSize,
-                    color: Colors.buttonMainText,
-                }}>
-                    Start generating
-                </Text>
+              }}
+              onPress={() => navigation.navigate("SetMoods")}
+            >
+              <Text
+                style={{
+                  fontFamily: Fonts.button.fontFamily,
+                  fontSize: Fonts.button.fontSize,
+                  color: Colors.buttonMainText,
+                }}
+              >
+                Start generating
+              </Text>
             </Pressable>
           </View>
         </Pressable>

@@ -26,6 +26,7 @@ const LoginScreen = () => {
           // token is expired, remove it from async storage
           AsyncStorage.removeItem("token");
           AsyncStorage.removeItem("expirationDate");
+          navigation.replace('Login');
         }
       }
     };

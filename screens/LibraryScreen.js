@@ -18,12 +18,24 @@ const LibraryScreen = () => {
   const getDatabasePlaylists = async () => {
     try {
       const playlists = await getPlaylists();
-      setDatabasePlaylists(playlists);
+      const validPlaylists = [];
+      for (const playlist of playlists) {
+        try {
+          const response = await axios.get(playlist.url);
+          if (response.status === 200) {
+            validPlaylists.push(playlist);
+          } else {
+            deletePlaylist(playlist.id);
+          }
+        } catch (error) {
+          deletePlaylist(playlist.id);
+        }
+      }
+      setDatabasePlaylists(validPlaylists);
     } catch (error) {
       console.error("Error fetching playlists from database:", error);
     }
   };
-
   useEffect(() => {
     getDatabasePlaylists();
   }, []);
@@ -106,16 +118,42 @@ const LibraryScreen = () => {
     return playlists;
   };
 
+  const getPlaylist = async (playlistUrl) => {
+    const accessToken = await AsyncStorage.getItem("token");
+    try {
+      const response = await axios({
+        method: "GET",
+        url: playlistUrl,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const spotifyPlaylist = response.data.items;
+      return spotifyPlaylist;
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   const renderItem = ({ item }) => {
     const openPlaylistInSpotify = () => {
-      const playlistURI = item.uri;
-      const playlistID = playlistURI.substring("spotify:playlist:".length);
+      if (item.uri == undefined) {
+        console.log(item.url)
+        const currentPlaylist = getPlaylist(item.url);
+        console.log(currentPlaylist)
+        Linking.openURL(item.url).catch((err) =>
+          console.error("Failed to open link:", err)
+        );
+      } else {
+        const playlistURI = item.uri;
+        const playlistID = playlistURI.substring("spotify:playlist:".length);
 
-      const spotifyDeepLink = `https://open.spotify.com/playlist/${playlistID}`;
+        const spotifyDeepLink = `https://open.spotify.com/playlist/${playlistID}`;
 
-      Linking.openURL(spotifyDeepLink).catch((err) =>
-        console.error("Failed to open link:", err)
-      );
+        Linking.openURL(spotifyDeepLink).catch((err) =>
+          console.error("Failed to open link:", err)
+        );
+      }
     };
 
     return (
@@ -411,19 +449,29 @@ const LibraryScreen = () => {
           </Text>
         </View> */}
 
-        <View style={{
-          marginLeft: 24,
-          marginTop: 24,
-        }}>
+        <View>
           {databasePlaylists.length > 0 ? (
-            <FlatList
-              horizontal={true}
-              data={databasePlaylists}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
-            />
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                marginLeft: 24,
+                marginTop: 18,
+              }}
+            >
+              <FlatList
+                horizontal={true}
+                data={databasePlaylists}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+              />
+            </View>
           ) : (
-            <View style={{ marginLeft: 24 }}>
+            <View
+              style={{
+                alignItems: "center",
+              }}
+            >
               <Image
                 source={require("../assets/img/no-playlists.png")}
                 style={{
@@ -441,6 +489,18 @@ const LibraryScreen = () => {
                 }}
               >
                 You haven't saved any playlists yet
+              </Text>
+              <Text
+                style={{
+                  fontFamily: Fonts.cardParagraph.fontFamily,
+                  fontSize: Fonts.cardParagraph.fontSize,
+                  color: Colors.textSecondary,
+                  alignSelf: "center",
+                  marginTop: 6,
+                  marginBottom: 12,
+                }}
+              >
+                Use the Playlist Generator to create playlists.
               </Text>
             </View>
           )}
