@@ -9,38 +9,12 @@ import {
 import { Linking, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
-import { getPlaylists, initDatabase } from "../Database.js";
+import { useIsFocused,  useNavigation } from "@react-navigation/native";
 
 const LibraryScreen = () => {
-  const [databasePlaylists, setDatabasePlaylists] = useState([]);
-
-  const getDatabasePlaylists = async () => {
-    try {
-      const playlists = await getPlaylists();
-      const validPlaylists = [];
-      for (const playlist of playlists) {
-        try {
-          const response = await axios.get(playlist.url);
-          if (response.status === 200) {
-            validPlaylists.push(playlist);
-          } else {
-            deletePlaylist(playlist.id);
-          }
-        } catch (error) {
-          deletePlaylist(playlist.id);
-        }
-      }
-      setDatabasePlaylists(validPlaylists);
-    } catch (error) {
-      console.error("Error fetching playlists from database:", error);
-    }
-  };
-  useEffect(() => {
-    getDatabasePlaylists();
-  }, []);
-
   const navigation = useNavigation();
+
+  const isFocused = useIsFocused();
 
   const [userProfile, setUserProfile] = useState([]);
 
@@ -70,7 +44,7 @@ const LibraryScreen = () => {
     try {
       const response = await axios({
         method: "GET",
-        url: "https://api.spotify.com/v1/me/playlists?limit=5",
+        url: "https://api.spotify.com/v1/me/playlists?limit=4",
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -81,6 +55,7 @@ const LibraryScreen = () => {
       console.log(err.message);
     }
   };
+
   useEffect(() => {
     getRecentPlaylists();
   }, []);
@@ -102,6 +77,7 @@ const LibraryScreen = () => {
       console.log(err.message);
     }
   };
+
   useEffect(() => {
     getAllPlaylists();
   }, []);
@@ -118,65 +94,44 @@ const LibraryScreen = () => {
     return playlists;
   };
 
-  const getPlaylist = async (playlistUrl) => {
-    const accessToken = await AsyncStorage.getItem("token");
-    try {
-      const response = await axios({
-        method: "GET",
-        url: playlistUrl,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const spotifyPlaylist = response.data.items;
-      return spotifyPlaylist;
-    } catch (err) {
-      console.log(err.message);
+  useEffect(() => {
+    if (isFocused) {
+      getRecentPlaylists();
     }
-  };
+  }, [isFocused]);
 
   const renderItem = ({ item }) => {
     const openPlaylistInSpotify = () => {
-      if (item.uri == undefined) {
-        console.log(item.url)
-        const currentPlaylist = getPlaylist(item.url);
-        console.log(currentPlaylist)
-        Linking.openURL(item.url).catch((err) =>
-          console.error("Failed to open link:", err)
-        );
-      } else {
-        const playlistURI = item.uri;
-        const playlistID = playlistURI.substring("spotify:playlist:".length);
+      const playlistURI = item.uri;
+      const playlistID = playlistURI.substring("spotify:playlist:".length);
 
-        const spotifyDeepLink = `https://open.spotify.com/playlist/${playlistID}`;
+      const spotifyDeepLink = `https://open.spotify.com/playlist/${playlistID}`;
 
-        Linking.openURL(spotifyDeepLink).catch((err) =>
-          console.error("Failed to open link:", err)
-        );
-      }
+      Linking.openURL(spotifyDeepLink).catch((err) =>
+        console.error("Failed to open link:", err)
+      );
     };
 
     return (
       <Pressable
         style={{
-          marginRight: 10,
+          marginBottom: 24,
         }}
         onPress={openPlaylistInSpotify}
       >
         {/* <Image
           style={{
-            height: 145,
-            width: 145,
+            height: 163,
+            width: 161,
             borderRadius: 10,
           }}
           source={{ uri: item.images[0].url }}
-          
         /> */}
         {item.images && item.images.length > 0 ? (
           <Image
             style={{
-              height: 145,
-              width: 145,
+              height: 163,
+              width: 161,
               borderRadius: 10,
             }}
             source={{ uri: item.images[0].url }}
@@ -184,8 +139,8 @@ const LibraryScreen = () => {
         ) : (
           <Image
             style={{
-              height: 145,
-              width: 145,
+              height: 163,
+              width: 161,
               borderRadius: 10,
               backgroundColor: Colors.optionDisabledFill,
             }}
@@ -360,7 +315,7 @@ const LibraryScreen = () => {
           </Pressable>
         </View>
 
-        <View
+        {/* <View
           style={{
             marginLeft: 24,
             marginRight: 24,
@@ -402,55 +357,55 @@ const LibraryScreen = () => {
               <ArrowRightRegular color={Colors.textSeeAll} width={17} />
             </Pressable>
           </View>
-        </View>
-        {/* 
+        </View> */}
+
         <View
           style={{
             marginLeft: 24,
             marginRight: 24,
+            marginTop: 24,
           }}
         >
           <View
             style={{
-              height: 160,
-              padding: 20,
-              marginTop: 12,
+              alignItems: "center",
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <Image
-              source={require("../assets/img/no-playlists.png")}
+            <Text
               style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "contain",
+                fontFamily: Fonts.sectionTitle.fontFamily,
+                fontSize: Fonts.sectionTitle.fontSize,
+                color: "black",
               }}
-            ></Image>
+            >
+              Recent playlists
+            </Text>
+            <Pressable
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+              onPress={() => navigation.navigate("AllPlaylists")}
+            >
+              <Text
+                style={{
+                  fontFamily: Fonts.seeAll.fontFamily,
+                  fontSize: Fonts.seeAll.fontSize,
+                  color: Colors.textSeeAll,
+                  marginRight: 6,
+                }}
+              >
+                See all
+              </Text>
+              <ArrowRightRegular color={Colors.textSeeAll} width={17} />
+            </Pressable>
           </View>
-          <Text
-            style={{
-              fontFamily: Fonts.cardTitle.fontFamily,
-              fontSize: Fonts.cardTitle.fontSize,
-              alignSelf: "center",
-            }}
-          >
-            You haven't generated any playlists yet
-          </Text>
-          <Text
-            style={{
-              fontFamily: Fonts.cardParagraph.fontFamily,
-              fontSize: Fonts.cardParagraph.fontSize,
-              color: Colors.textSecondary,
-              alignSelf: "center",
-              marginTop: 6,
-              marginBottom: 12,
-            }}
-          >
-            Use the Playlist Generator to create playlists.
-          </Text>
-        </View> */}
+        </View>
 
-        <View>
-          {databasePlaylists.length > 0 ? (
+        {/* <View>
+          {recentPlaylists.length > 0 ? (
             <View
               style={{
                 alignItems: "center",
@@ -461,9 +416,12 @@ const LibraryScreen = () => {
             >
               <FlatList
                 horizontal={true}
-                data={databasePlaylists}
+                data={
+                  sortBy === "Recent"
+                    ? recentPlaylists
+                    : sortPlaylists(allPlaylists).slice(0, 5)
+                }
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
               />
             </View>
           ) : (
@@ -504,70 +462,65 @@ const LibraryScreen = () => {
               </Text>
             </View>
           )}
-        </View>
+        </View> */}
 
-        <View
-          style={{
-            marginLeft: 24,
-            marginRight: 24,
-            marginTop: 24,
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
+        <View>
+          {recentPlaylists.length > 0 ? (
+            <FlatList
+              numColumns={2}
+              scrollEnabled={false}
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              data={
+                sortBy === "Recent"
+                  ? recentPlaylists
+                  : sortPlaylists(allPlaylists)
+              }
+              renderItem={renderItem}
               style={{
-                fontFamily: Fonts.sectionTitle.fontFamily,
-                fontSize: Fonts.sectionTitle.fontSize,
-                color: "black",
+                marginLeft: 24,
+                marginRight: 24,
+                marginTop: 30,
+                marginBottom: 40,
               }}
-            >
-              All playlists
-            </Text>
-            <Pressable
+            />
+          ) : (
+            <View
               style={{
                 alignItems: "center",
-                flexDirection: "row",
               }}
-              onPress={() => navigation.navigate("AllPlaylists")}
             >
+              <Image
+                source={require("../assets/img/no-playlists.png")}
+                style={{
+                  width: 145,
+                  height: 145,
+                  resizeMode: "contain",
+                  borderRadius: 10,
+                }}
+              />
               <Text
                 style={{
-                  fontFamily: Fonts.seeAll.fontFamily,
-                  fontSize: Fonts.seeAll.fontSize,
-                  color: Colors.textSeeAll,
-                  marginRight: 6,
+                  fontFamily: Fonts.cardTitle.fontFamily,
+                  fontSize: Fonts.cardTitle.fontSize,
+                  marginTop: 12,
                 }}
               >
-                See all
+                You haven't saved any playlists yet
               </Text>
-              <ArrowRightRegular color={Colors.textSeeAll} width={17} />
-            </Pressable>
-          </View>
-        </View>
-
-        <View
-          style={{
-            alignItems: "center",
-            flexDirection: "row",
-            marginLeft: 24,
-            marginTop: 18,
-          }}
-        >
-          <FlatList
-            horizontal={true}
-            data={
-              sortBy === "Recent"
-                ? recentPlaylists
-                : sortPlaylists(allPlaylists).slice(0, 5)
-            }
-            renderItem={renderItem}
-          />
+              <Text
+                style={{
+                  fontFamily: Fonts.cardParagraph.fontFamily,
+                  fontSize: Fonts.cardParagraph.fontSize,
+                  color: Colors.textSecondary,
+                  alignSelf: "center",
+                  marginTop: 6,
+                  marginBottom: 12,
+                }}
+              >
+                Use the Playlist Generator to create playlists.
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     </View>

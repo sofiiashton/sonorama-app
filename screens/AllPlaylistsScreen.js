@@ -41,7 +41,6 @@ const AllPlaylistsScreen = ({ navigation }) => {
     getProfile();
   }, []);
 
-  // fetch recent playlists
   const [recentPlaylists, setRecentPlaylists] = useState([]);
   const getRecentPlaylists = async () => {
     const accessToken = await AsyncStorage.getItem("token");
@@ -63,7 +62,6 @@ const AllPlaylistsScreen = ({ navigation }) => {
     getRecentPlaylists();
   }, []);
 
-  // fetch all playlists
   const [allPlaylists, setAllPlaylists] = useState([]);
   const getAllPlaylists = async () => {
     const accessToken = await AsyncStorage.getItem("token");
@@ -85,7 +83,6 @@ const AllPlaylistsScreen = ({ navigation }) => {
     getAllPlaylists();
   }, []);
 
-  // sort playlists
   const [sortBy, setSortBy] = useState("Recent");
   const sortPlaylists = (playlists) => {
     if (sortBy === "Recent") {
@@ -98,7 +95,6 @@ const AllPlaylistsScreen = ({ navigation }) => {
     return playlists;
   };
 
-  // render each playlist
   const renderItem = ({ item }) => {
     const openPlaylistInSpotify = () => {
       const playlistURI = item.uri;
@@ -141,7 +137,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
               height: 163,
               width: 161,
               borderRadius: 10,
-              backgroundColor: Colors.optionDisabledFill, // Set a grey background color for the default image
+              backgroundColor: Colors.optionDisabledFill,
             }}
           />
         )}
