@@ -235,13 +235,13 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             </Text>
             <View
               style={{
-                height: 430,
+                height: 418,
               }}
             >
               <ScrollView
                 style={{
                   marginTop: 20,
-                  height: 424,
+                  height: 418,
                   borderWidth: 1,
                   borderColor: theme.stroke,
                   borderRadius: 10,
@@ -272,7 +272,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
         style={{
           marginLeft: 24,
           marginRight: 24,
-          marginTop: 42,
+          marginTop: 30,
         }}
       >
         <Pressable
