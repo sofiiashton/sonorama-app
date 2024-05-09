@@ -7,8 +7,8 @@ import {
   Linking,
   TextInput,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   ArrowLeftRegular,
@@ -21,9 +21,12 @@ import * as ImagePicker from "expo-image-picker";
 import Slider from "@react-native-community/slider";
 import CheckBox from "@react-native-community/checkbox";
 import LoadingSpinner from "../assets/loading.gif";
-import * as FileSystem from "expo-file-system";
+import themeContext from "../theme/themeContext.js";
+import theme from "../theme/theme.js";
 
 const SetPlaylistSettingsScreen = ({ navigation, route }) => {
+  const theme = useContext(themeContext);
+
   const moodParameters = {
     Chill: { target_energy: 0.2, max_energy: 0.5, max_tempo: 120 },
     Acoustic: { target_acousticness: 0.8, min_acousticness: 0.5 },
@@ -129,15 +132,10 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
       base64: true,
     });
 
-    console.log("base64:", result.assets[0].base64)
+    console.log("base64:", result.assets[0].base64);
 
     if (!result.canceled) {
-      // const base64Image = result.assets[0].base64; // Assuming result is the ImagePicker result object
-      // const imageSizeInBytes = base64Image.length;
-      // const imageSizeInKB = imageSizeInBytes / 1024; // Convert bytes to kilobytes
-
-      // console.log(imageSizeInKB)
-      setBase64Image(result.assets[0].base64); // Set state with base64 string
+      setBase64Image(result.assets[0].base64);
 
       setImage(result.assets[0].uri);
     }
@@ -147,8 +145,6 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   const [isInputFocused, setInputFocused] = useState(false);
 
   const [playlistSize, setPlaylistSize] = useState(50);
-
-  //   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const generateRecommendations = async (
     selectedMoods,
@@ -300,23 +296,6 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         throw new Error("Failed to add tracks to playlist");
       }
 
-    //   const uploadImageResponse = await fetch(
-    //     `https://api.spotify.com/v1/playlists/${playlistId}/images`,
-    //     {
-    //       method: "PUT",
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //         "Content-Type": "image/jpeg",
-    //       },
-    //       body: base64Image,
-    //     }
-    //   );
-
-    //   if (!uploadImageResponse.ok) {
-    //     throw new Error("Failed to upload playlist image");
-    //   }
-
-      console.log("Playlist created with ID:", playlistId);
       navigation.navigate("PlaylistCreated", { playlistId });
     } catch (error) {
       console.error("Error creating playlist:", error.message);
@@ -326,12 +305,12 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   const [isLoading, setLoading] = useState(false);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 76,
@@ -345,13 +324,13 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <ArrowLeftRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+          <ArrowLeftRegular color={theme.textSecondary} width={20} />
         </Pressable>
         <Text
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           Playlist Generator
@@ -369,6 +348,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           Give your playlist a name
@@ -378,7 +358,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.cardParagraph.fontFamily,
             fontSize: Fonts.cardParagraph.fontSize,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
             marginTop: 8,
           }}
         >
@@ -395,7 +375,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           marginRight: 24,
           borderRadius: 20,
           borderWidth: 1,
-          borderColor: Colors.optionDisabledStroke,
+          borderColor: theme.optionDisabledStroke,
         }}
       >
         {image ? (
@@ -412,7 +392,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             onPress={pickImage}
             style={{
               flex: 1,
-              backgroundColor: Colors.optionDisabledFill,
+              backgroundColor: theme.optionDisabledFill,
               borderRadius: 20,
               alignItems: "center",
               justifyContent: "center",
@@ -443,8 +423,8 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
         <TextInput
           style={{
             borderColor: isInputFocused
-              ? Colors.buttonMainFill
-              : Colors.optionDisabledStroke,
+              ? theme.buttonMainFill
+              : theme.optionDisabledStroke,
             borderWidth: 1,
             borderRadius: 10,
             width: 342,
@@ -453,12 +433,12 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             paddingRight: 16,
             paddingTop: 12,
             paddingBottom: 12,
-            color: isInputFocused ? "black" : Colors.optionDisabledText,
+            color: isInputFocused ? theme.textDefault : theme.optionDisabledText,
           }}
           onChangeText={(text) => setPlaylistName(text)} // Update playlistName when user types
           value={playlistName}
           placeholder="SonoMix"
-          placeholderTextColor={Colors.optionDisabledText} // Set placeholder text color to grey
+          placeholderTextColor={theme.optionDisabledText} // Set placeholder text color to grey
           onFocus={() => setInputFocused(true)}
           onBlur={() => setInputFocused(false)}
         />
@@ -475,6 +455,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           Playlist size: {playlistSize} songs
@@ -484,14 +465,14 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            alignItems: "center", // Add this line
+            alignItems: "center",
             marginTop: 16,
           }}
         >
           <Text
             style={{
               fontFamily: Fonts.cardParagraph.fontFamily,
-              color: Colors.optionDisabledText,
+              color: theme.optionDisabledText,
             }}
           >
             2
@@ -504,7 +485,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             value={playlistSize}
             onValueChange={(value) => setPlaylistSize(value)}
             minimumTrackTintColor="rgba(240, 153, 50, 1)"
-            maximumTrackTintColor="rgba(0, 0, 0, 0.1)"
+            maximumTrackTintColor={theme.optionDisabledStroke}
             style={{
               flex: 1,
               height: 40,
@@ -515,7 +496,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           <Text
             style={{
               fontFamily: Fonts.cardParagraph.fontFamily,
-              color: Colors.optionDisabledText,
+              color: theme.optionDisabledText,
             }}
           >
             100
@@ -536,8 +517,8 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
           disabled={false}
           value={toggleCheckBox}
           onValueChange={(newValue) => setToggleCheckBox(newValue)}
-          onCheckColor={Colors.buttonMainFill}
-          onTintColor={Colors.buttonMainFill}
+          onCheckColor={theme.buttonMainFill}
+          onTintColor={theme.buttonMainFill}
           style={{
             width: 24,
             height: 24,
@@ -569,14 +550,14 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
               selectedGenres,
               playlistSize,
               playlistName,
-              base64Image,
+              base64Image
             );
             setLoading(false);
           }}
           style={{
-            backgroundColor: Colors.buttonMainFill,
+            backgroundColor: theme.buttonMainFill,
             height: 48,
-            borderColor: Colors.buttonMainStroke,
+            borderColor: theme.buttonMainStroke,
             borderWidth: 1,
             borderRadius: 10,
             alignItems: "center",
@@ -605,7 +586,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
 export default SetPlaylistSettingsScreen;
 const styles = StyleSheet.create({
   selectedGenre: {
-    backgroundColor: Colors.optionSelectedFill,
+    backgroundColor: theme.optionSelectedFill,
     marginRight: 6,
     marginBottom: 6,
     paddingLeft: 12,
@@ -613,14 +594,14 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     borderWidth: 1,
-    borderColor: Colors.optionSelectedStroke,
+    borderColor: theme.optionSelectedStroke,
     borderRadius: 8,
     fontFamily: Fonts.baseFont.fontFamily,
     fontSize: Fonts.baseFont.fontSize,
-    color: Colors.optionSelectedText,
+    color: theme.optionSelectedText,
   },
   unselectedGenre: {
-    backgroundColor: Colors.optionDisabledFill,
+    backgroundColor: theme.optionDisabledFill,
     marginRight: 6,
     marginBottom: 6,
     paddingLeft: 12,
@@ -628,10 +609,10 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     borderWidth: 1,
-    borderColor: Colors.optionDisabledStroke,
+    borderColor: theme.optionDisabledStroke,
     borderRadius: 8,
     fontFamily: Fonts.baseFont.fontFamily,
     fontSize: Fonts.baseFont.fontSize,
-    color: Colors.optionDisabledText,
+    color: theme.optionDisabledText,
   },
 });

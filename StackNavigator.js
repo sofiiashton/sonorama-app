@@ -7,21 +7,24 @@ import SettingsScreen from "./screens/SettingsScreen";
 import SetMoodsScreen from "./screens/SetMoodsScreen";
 import { HomeFilled, HomeRegular, LibraryFilled, LibraryRegular, SettingsFilled, SettingsRegular} from "@fluentui/react-native-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DarkTheme } from "@react-navigation/native";
 import SetGenresScreen from "./screens/SetGenresScreen";
 import SetPlaylistSettingsScreen from "./screens/SetPlaylistSettingsScreen";
 import PlaylistCreatedScreen from "./screens/PlaylistCreatedScreen";
 import ForYouScreen from "./screens/ForYouScreen";
+import themeContext from "./theme/themeContext";
+import React, { useContext } from "react";
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabs() {
+  const theme = useContext(themeContext);
   return (
     <Tab.Navigator screenOptions={{
       tabBarStyle: {
-        backgroundColor:"white",
+        backgroundColor: theme.navBar,
         position:"absolute",
-        borderTopColor:"rgba(0,0,0,0.05)",
+        borderTopColor: theme.stroke,
         borderTopWidth: 1,
         paddingTop:18,
         paddingBottom:42
@@ -34,13 +37,11 @@ function BottomTabs() {
           tabBarLabel: "Home",
           headerShown: false,
           tabBarShowLabel: false,
-        //   tabBarLabelStyle: { color: "black" },
-        //   tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <HomeFilled color="black"/>
+              <HomeFilled color={theme.textDefault}/>
             ) : (
-              <HomeRegular color="black"/>
+              <HomeRegular color={theme.textDefault}/>
             ),
         }}
       />
@@ -51,13 +52,11 @@ function BottomTabs() {
           tabBarLabel: "Library",
           headerShown: false,
           tabBarShowLabel: false,
-        //   tabBarLabelStyle: { color: "black" },
-        //   tabBarLabelPosition: "below-icon",
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <LibraryFilled color="black"/>
+              <LibraryFilled color={theme.textDefault}/>
             ) : (
-              <LibraryRegular color="black"/>
+              <LibraryRegular color={theme.textDefault}/>
             ),
         }}
       />
@@ -68,12 +67,11 @@ function BottomTabs() {
           tabBarLabel: "Settings",
           headerShown: false,
           tabBarShowLabel: false,
-        //   tabBarLabelStyle: { color: "black" },
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <SettingsFilled color="black"/>
+              <SettingsFilled color={theme.textDefault}/>
             ) : (
-              <SettingsRegular color="black"/>
+              <SettingsRegular color={theme.textDefault}/>
             ),
         }}
       />

@@ -5,19 +5,27 @@ import {
   Image,
   Pressable,
   Linking,
+  TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   OpenRegular,
   GlobeRegular,
   ColorRegular,
 } from "@fluentui/react-native-icons";
-import { Picker } from "@react-native-picker/picker";
+import SwitchToggle from "react-native-switch-toggle";
 
-const SettingsScreen = ({navigation}) => {
-  const selectedLanguage = "";
+import { EventRegister } from "react-native-event-listeners";
+import themeContext from "../theme/themeContext.js";
+
+const SettingsScreen = ({ navigation }) => {
+  // const selectedLanguage = "";
+
+  const theme = useContext(themeContext);
+  const [darkMode, setDarkMode] = useState(false);
+
   const [userProfile, setUserProfile] = useState(null);
 
   const getProfile = async () => {
@@ -62,12 +70,19 @@ const SettingsScreen = ({navigation}) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View
+      style={{
+        flex: 1,
+        // backgroundColor:
+        //   theme === "light" ? theme.background : themeDark.background,
+        backgroundColor: theme.background,
+      }}
+    >
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 94,
@@ -77,7 +92,7 @@ const SettingsScreen = ({navigation}) => {
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           Settings
@@ -96,6 +111,7 @@ const SettingsScreen = ({navigation}) => {
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
             marginBottom: 24,
+            color: theme.textDefault,
           }}
         >
           Connected account
@@ -104,7 +120,7 @@ const SettingsScreen = ({navigation}) => {
           style={{
             height: 134,
             borderWidth: 1,
-            borderColor: Colors.stroke,
+            borderColor: theme.stroke,
             borderRadius: 20,
             flexDirection: "row",
           }}
@@ -131,7 +147,11 @@ const SettingsScreen = ({navigation}) => {
           )}
           <View style={{ paddingTop: 16 }}>
             <Text
-              style={{ fontFamily: Fonts.baseFont.fontFamily, fontSize: 18 }}
+              style={{
+                fontFamily: Fonts.baseFont.fontFamily,
+                fontSize: 18,
+                color: theme.textDefault,
+              }}
             >
               {username}
             </Text>
@@ -139,7 +159,7 @@ const SettingsScreen = ({navigation}) => {
               style={{
                 fontFamily: Fonts.cardParagraph.fontFamily,
                 fontSize: Fonts.cardParagraph.fontSize,
-                color: Colors.textSecondary,
+                color: theme.textSecondary,
                 marginTop: 4,
               }}
             >
@@ -147,8 +167,8 @@ const SettingsScreen = ({navigation}) => {
             </Text>
             <Pressable
               style={{
-                backgroundColor: Colors.openInSpotifyFill,
-                borderColor: Colors.openInSpotifyStroke,
+                backgroundColor: theme.openInSpotifyFill,
+                borderColor: theme.openInSpotifyStroke,
                 borderWidth: 1,
                 borderRadius: 8,
                 alignItems: "center",
@@ -162,13 +182,13 @@ const SettingsScreen = ({navigation}) => {
               }}
               onPress={openInSpotify}
             >
-              <OpenRegular color={Colors.textSeeAll} width={17} />
+              <OpenRegular color={theme.textSeeAll} width={17} />
               <Text
                 style={{
                   fontFamily: Fonts.openInSpotify.fontFamily,
                   fontSize: Fonts.openInSpotify.fontSize,
                   marginLeft: 6,
-                  color: "rgba(0, 0, 0, 0.8)",
+                  color: theme.openInSpotifyText,
                 }}
               >
                 Open in Spotify
@@ -178,21 +198,22 @@ const SettingsScreen = ({navigation}) => {
         </View>
         <Pressable
           style={{
-            backgroundColor: Colors.logOutFill,
-            borderColor: Colors.logOutStroke,
+            backgroundColor: theme.logOutFill,
+            borderColor: theme.logOutStroke,
             borderWidth: 1,
             borderRadius: 10,
             width: 342,
             paddingTop: 12,
             paddingBottom: 12,
             marginTop: 18,
-          }} onPress={handleLogout}
+          }}
+          onPress={handleLogout}
         >
           <Text
             style={{
               fontFamily: Fonts.button.fontFamily,
               fontSize: Fonts.button.fontSize,
-              color: Colors.logOutText,
+              color: theme.logOutText,
               alignSelf: "center",
             }}
           >
@@ -212,6 +233,7 @@ const SettingsScreen = ({navigation}) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           Application Settings
@@ -224,7 +246,7 @@ const SettingsScreen = ({navigation}) => {
         >
           <View
             style={{
-              borderBottomColor: Colors.stroke,
+              borderBottomColor: theme.stroke,
               borderBottomWidth: 1,
             }}
           >
@@ -242,27 +264,18 @@ const SettingsScreen = ({navigation}) => {
                   flexDirection: "row",
                 }}
               >
-                <GlobeRegular color={Colors.settingsIcons} width={20} />
+                <GlobeRegular color={theme.settingsIcons} width={20} />
                 <Text
                   style={{
                     fontFamily: Fonts.cardTitle.fontFamily,
                     fontSize: Fonts.cardTitle.fontSize,
                     marginLeft: 12,
+                    color: theme.textDefault,
                   }}
                 >
                   Language
                 </Text>
               </View>
-
-              {/* <Picker
-                selectedValue={selectedLanguage}
-                onValueChange={(itemValue, itemIndex) =>
-                  setSelectedLanguage(itemValue)
-                }
-              >
-                <Picker.Item label="English" value="eng" />
-                <Picker.Item label="Ukrainian" value="ukr" />
-              </Picker> */}
             </View>
           </View>
 
@@ -272,6 +285,7 @@ const SettingsScreen = ({navigation}) => {
                 justifyContent: "space-between",
                 marginTop: 16,
                 marginBottom: 16,
+                flexDirection: "row",
               }}
             >
               <View
@@ -280,27 +294,46 @@ const SettingsScreen = ({navigation}) => {
                   flexDirection: "row",
                 }}
               >
-                <ColorRegular color={Colors.settingsIcons} width={20} />
+                <ColorRegular color={theme.settingsIcons} width={20} />
                 <Text
                   style={{
                     fontFamily: Fonts.cardTitle.fontFamily,
                     fontSize: Fonts.cardTitle.fontSize,
                     marginLeft: 12,
+                    color: theme.textDefault,
                   }}
                 >
-                  Theme
+                  Dark mode
                 </Text>
               </View>
 
-              {/* <Picker
-                selectedValue={selectedLanguage}
-                onValueChange={(itemValue, itemIndex) =>
-                  setSelectedLanguage(itemValue)
-                }
-              >
-                <Picker.Item label="English" value="eng" />
-                <Picker.Item label="Ukrainian" value="ukr" />
-              </Picker> */}
+              <View>
+                <SwitchToggle
+                  containerStyle={{
+                    width: 45,
+                    height: 24,
+                    borderRadius: 25,
+                    padding: 4,
+                    marginRight: 2,
+                  }}
+                  circleStyle={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 8,
+                    backgroundColor: "white",
+                  }}
+                  switchOn={darkMode}
+                  onPress={() => {
+                    setDarkMode(!darkMode);
+                    EventRegister.emit("Change Theme", !darkMode);
+                  }}
+                  backgroundColorOn={theme.buttonMainFill}
+                  backgroundColorOff={theme.textSecondary}
+                  circleColorOff="white"
+                  circleColorOn="white"
+                  duration={300}
+                />
+              </View>
             </View>
           </View>
         </View>

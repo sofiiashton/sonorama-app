@@ -6,8 +6,8 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors, Spacing } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import {
   ArrowLeftRegular,
   ArrowRightRegular,
@@ -17,8 +17,12 @@ import { Linking, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
+import themeContext from "../theme/themeContext.js";
+import theme from "../theme/theme.js";
 
 const SetMoodsScreen = ({ navigation }) => {
+  const theme = useContext(themeContext);
+
   const [userProfile, setUserProfile] = useState([]);
 
   const getProfile = async () => {
@@ -60,16 +64,56 @@ const SetMoodsScreen = ({ navigation }) => {
     return (
       <Pressable
         key={mood}
-        style={[isSelected ? styles.selectedMood : styles.unselectedMood]}
+        style={[
+          isSelected
+            ? {
+                backgroundColor: theme.optionSelectedFill,
+                marginRight: 6,
+                marginBottom: 6,
+                paddingLeft: 12,
+                paddingRight: 12,
+                paddingTop: 8,
+                paddingBottom: 8,
+                borderWidth: 1,
+                borderColor: theme.optionSelectedStroke,
+                borderRadius: 8,
+                fontFamily: Fonts.baseFont.fontFamily,
+                fontSize: Fonts.baseFont.fontSize,
+                color: theme.optionSelectedText,
+              }
+            : {
+                backgroundColor: theme.optionDisabledFill,
+                marginRight: 6,
+                marginBottom: 6,
+                paddingLeft: 12,
+                paddingRight: 12,
+                paddingTop: 8,
+                paddingBottom: 8,
+                borderWidth: 1,
+                borderColor: theme.optionDisabledStroke,
+                borderRadius: 8,
+                fontFamily: Fonts.baseFont.fontFamily,
+                fontSize: Fonts.baseFont.fontSize,
+                color: theme.optionDisabledText,
+              },
+        ]}
         onPress={() => toggleMood(mood)}
       >
-        <Text style={[isSelected ? {
-            fontFamily: Fonts.baseFont.fontFamily,
-            color: Colors.optionSelectedText,
-          } : {
-            fontFamily: Fonts.baseFont.fontFamily,
-            color: Colors.optionDisabledText,
-          }]}>{mood}</Text>
+        <Text
+          style={[
+            isSelected
+              ? {
+                  fontFamily: Fonts.baseFont.fontFamily,
+                  color: theme.optionSelectedText,
+                }
+              : {
+                  fontFamily: Fonts.baseFont.fontFamily,
+                  color: theme.optionDisabledText,
+                },
+          ]}
+        >
+          {mood}
+        </Text>
       </Pressable>
     );
   };
@@ -79,12 +123,12 @@ const SetMoodsScreen = ({ navigation }) => {
   }, [selectedMoods]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 76,
@@ -98,13 +142,13 @@ const SetMoodsScreen = ({ navigation }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <ArrowLeftRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+          <ArrowLeftRegular color={theme.textSecondary} width={20} />
         </Pressable>
         <Text
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           Playlist Generator
@@ -113,7 +157,7 @@ const SetMoodsScreen = ({ navigation }) => {
 
       <View
         style={{
-          backgroundColor: Colors.tooltipFill,
+          backgroundColor: theme.tooltipFill,
           marginLeft: 24,
           marginRight: 24,
           marginTop: 20,
@@ -122,18 +166,18 @@ const SetMoodsScreen = ({ navigation }) => {
           paddingTop: 10,
           paddingBottom: 10,
           borderWidth: 1,
-          borderColor: Colors.tooltipStroke,
+          borderColor: theme.tooltipStroke,
           borderRadius: 10,
           flexDirection: "row",
           alignItems: "center",
         }}
       >
-        <QuestionCircleRegular color={Colors.iconTooltip} width={20} />
+        <QuestionCircleRegular color={theme.iconTooltip} width={20} />
         <Text
           style={{
             fontFamily: Fonts.tooltip.fontFamily,
             fontSize: Fonts.tooltip.fontSize,
-            color: Colors.textTooltip,
+            color: theme.textTooltip,
             marginLeft: 10,
             flexWrap: "wrap",
           }}
@@ -154,6 +198,7 @@ const SetMoodsScreen = ({ navigation }) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           What moods do you want to have in this playlist?
@@ -162,7 +207,7 @@ const SetMoodsScreen = ({ navigation }) => {
           style={{
             fontFamily: Fonts.cardParagraph.fontFamily,
             fontSize: Fonts.cardParagraph.fontSize,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
             marginTop: 8,
           }}
         >
@@ -219,14 +264,14 @@ const SetMoodsScreen = ({ navigation }) => {
       >
         <Pressable
           onPress={() => {
-            navigation.navigate('SetGenres', { selectedMoods: selectedMoods });
+            navigation.navigate("SetGenres", { selectedMoods: selectedMoods });
           }}
           style={{
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "row",
-            backgroundColor: Colors.buttonMainFill,
-            borderColor: Colors.buttonMainStroke,
+            backgroundColor: theme.buttonMainFill,
+            borderColor: theme.buttonMainStroke,
             borderRadius: 10,
             paddingTop: 12,
             paddingBottom: 12,
@@ -250,35 +295,4 @@ const SetMoodsScreen = ({ navigation }) => {
 };
 
 export default SetMoodsScreen;
-const styles = StyleSheet.create({
-  selectedMood: {
-    backgroundColor: Colors.optionSelectedFill,
-    marginRight: 6,
-    marginBottom: 6,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 8,
-    paddingBottom: 8,
-    borderWidth: 1,
-    borderColor: Colors.optionSelectedStroke,
-    borderRadius: 8,
-    fontFamily: Fonts.baseFont.fontFamily,
-    fontSize: Fonts.baseFont.fontSize,
-    color: Colors.optionSelectedText,
-  },
-  unselectedMood: {
-    backgroundColor: Colors.optionDisabledFill,
-    marginRight: 6,
-    marginBottom: 6,
-    paddingLeft: 12,
-    paddingRight: 12,
-    paddingTop: 8,
-    paddingBottom: 8,
-    borderWidth: 1,
-    borderColor: Colors.optionDisabledStroke,
-    borderRadius: 8,
-    fontFamily: Fonts.baseFont.fontFamily,
-    fontSize: Fonts.baseFont.fontSize,
-    color: Colors.optionDisabledText,
-  },
-});
+const styles = StyleSheet.create({});

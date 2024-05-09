@@ -6,14 +6,17 @@ import {
   Pressable,
   Linking,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ArrowLeftRegular } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import { ScrollView } from "react-native-virtualized-view";
+import themeContext from "../theme/themeContext.js";
 
 const ForYouScreen = ({ navigation, route }) => {
+  const theme = useContext(themeContext);
+
   const [userProfile, setUserProfile] = useState([]);
 
   const getProfile = async () => {
@@ -190,12 +193,12 @@ const ForYouScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 76,
@@ -209,13 +212,13 @@ const ForYouScreen = ({ navigation, route }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <ArrowLeftRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+          <ArrowLeftRegular color={theme.textSecondary} width={20} />
         </Pressable>
         <Text
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           For you
@@ -233,6 +236,7 @@ const ForYouScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           Here are some recommendations based on your recent activity
@@ -242,7 +246,7 @@ const ForYouScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.cardParagraph.fontFamily,
             fontSize: Fonts.cardParagraph.fontSize,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
             marginTop: 8,
           }}
         >
@@ -261,7 +265,7 @@ const ForYouScreen = ({ navigation, route }) => {
               marginTop: 24,
               height: 422,
               borderWidth: 1,
-              borderColor: Colors.stroke,
+              borderColor: theme.stroke,
               borderRadius: 10,
               padding: 20,
               marginLeft: 24,
@@ -284,7 +288,7 @@ const ForYouScreen = ({ navigation, route }) => {
                     width: 40,
                     height: 40,
                     borderWidth: 1,
-                    borderColor: Colors.stroke,
+                    borderColor: theme.stroke,
                     borderRadius: 4,
                   }}
                 />
@@ -298,6 +302,7 @@ const ForYouScreen = ({ navigation, route }) => {
                     style={{
                       fontFamily: Fonts.trackTitle.fontFamily,
                       fontSize: Fonts.trackTitle.fontSize,
+                      color: theme.textDefault,
                     }}
                     numberOfLines={1}
                     ellipsizeMode="tail"
@@ -308,7 +313,7 @@ const ForYouScreen = ({ navigation, route }) => {
                     style={{
                       fontFamily: Fonts.trackArtist.fontFamily,
                       fontSize: Fonts.trackArtist.fontSize,
-                      color: Colors.textSecondary,
+                      color: theme.textSecondary,
                     }}
                     numberOfLines={1}
                     ellipsizeMode="tail"
@@ -326,7 +331,7 @@ const ForYouScreen = ({ navigation, route }) => {
                     style={{
                       fontFamily: Fonts.trackArtist.fontFamily,
                       fontSize: Fonts.trackArtist.fontSize,
-                      color: Colors.textSecondary,
+                      color: theme.textSecondary,
                       marginLeft: 14,
                     }}
                   >
@@ -341,7 +346,7 @@ const ForYouScreen = ({ navigation, route }) => {
             style={{
               fontFamily: Fonts.cardParagraph.fontFamily,
               fontSize: Fonts.cardParagraph.fontSize,
-              color: Colors.textSecondary,
+              color: theme.textSecondary,
               marginTop: 8,
               marginLeft: 24,
             }}
@@ -362,9 +367,9 @@ const ForYouScreen = ({ navigation, route }) => {
           onPress={createPlaylistInSpotify}
           disabled={loading}
           style={{
-            backgroundColor: Colors.buttonMainFill,
+            backgroundColor: theme.buttonMainFill,
             borderWidth: 1,
-            borderColor: Colors.buttonMainStroke,
+            borderColor: theme.buttonMainStroke,
             borderRadius: 10,
             height: 48,
             alignItems: "center",

@@ -1,14 +1,16 @@
 import { StyleSheet, Text, SafeAreaView, View, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useFonts } from "expo-font";
-import { Fonts, Colors, Spacing } from "../config/index.js";
+import { Fonts } from "../config/index.js";
 import * as AppAuth from "expo-app-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "react-native";
+import themeContext from "../theme/themeContext.js";
 
 const LoginScreen = () => {
+  const theme = useContext(themeContext);
   const navigation = useNavigation();
   useEffect(() => {
     const checkTokenValidity = async () => {
@@ -70,7 +72,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "white",
+        backgroundColor: theme.background,
         flex: 1,
       }}
     >
@@ -87,7 +89,7 @@ const LoginScreen = () => {
 
       <Text
         style={{
-          color: Colors.textDefault,
+          color: theme.textDefault,
           fontSize: Fonts.screenTitle.fontSize,
           fontWeight: Fonts.screenTitle.fontWeight,
           fontFamily: Fonts.screenTitle.fontFamily,
@@ -100,7 +102,7 @@ const LoginScreen = () => {
 
       <Text
         style={{
-          color: Colors.textSecondary,
+          color: theme.textSecondary,
           fontSize: Fonts.cardParagraph.fontSize,
           textAlign: "center",
           marginTop: 16,
@@ -116,8 +118,8 @@ const LoginScreen = () => {
       <Pressable
         onPress={authenticate}
         style={{
-          backgroundColor: Colors.spotifyButtonFill,
-          borderColor: Colors.spotifyButtonStroke,
+          backgroundColor: theme.spotifyButtonFill,
+          borderColor: theme.spotifyButtonStroke,
           borderWidth: 1,
           textAlign: "center",
           fontFamily: Fonts.spotifyButton.fontFamily,

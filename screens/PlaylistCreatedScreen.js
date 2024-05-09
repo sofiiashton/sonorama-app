@@ -6,14 +6,17 @@ import {
   Pressable,
   Linking,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DismissRegular } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import { ScrollView } from "react-native-virtualized-view";
+import themeContext from "../theme/themeContext.js";
 
 const PlaylistCreatedScreen = ({ navigation, route }) => {
+  const theme = useContext(themeContext);
+
   const playlistId = route.params.playlistId;
 
   const [userProfile, setUserProfile] = useState([]);
@@ -102,7 +105,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               width: 40,
               height: 40,
               borderWidth: 1,
-              borderColor: Colors.stroke,
+              borderColor: theme.stroke,
               borderRadius: 4,
             }}
           />
@@ -119,6 +122,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
                 fontFamily: Fonts.trackTitle.fontFamily,
                 fontSize: Fonts.trackTitle.fontSize,
                 flex: 1,
+                color: theme.textDefault,
               }}
             >
               {track.name}
@@ -128,7 +132,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               style={{
                 fontFamily: Fonts.trackArtist.fontFamily,
                 fontSize: Fonts.trackArtist.fontSize,
-                color: Colors.textSecondary,
+                color: theme.textSecondary,
                 marginTop: 2,
               }}
             >
@@ -146,7 +150,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             style={{
               fontFamily: Fonts.trackArtist.fontFamily,
               fontSize: Fonts.trackArtist.fontSize,
-              color: Colors.textSecondary,
+              color: theme.textSecondary,
             }}
           >
             {formattedDuration}
@@ -167,12 +171,12 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 76,
@@ -185,7 +189,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           Your playlist
@@ -196,7 +200,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           }}
           onPress={() => navigation.navigate("Home")}
         >
-          <DismissRegular color="rgba(0, 0, 0, 0.4)" width={24} />
+          <DismissRegular color={theme.textSecondary} width={24} />
         </Pressable>
       </View>
 
@@ -211,6 +215,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           style={{
             fontFamily: Fonts.sectionTitle.fontFamily,
             fontSize: Fonts.sectionTitle.fontSize,
+            color: theme.textDefault,
           }}
         >
           Playlist created!
@@ -222,7 +227,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               style={{
                 fontFamily: Fonts.cardParagraph.fontFamily,
                 fontSize: Fonts.cardParagraph.fontSize,
-                color: Colors.textSecondary,
+                color: theme.textSecondary,
                 marginTop: 8,
               }}
             >
@@ -230,15 +235,15 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             </Text>
             <View
               style={{
-                height: 418,
+                height: 430,
               }}
             >
               <ScrollView
                 style={{
                   marginTop: 20,
-                  height: 420,
+                  height: 424,
                   borderWidth: 1,
-                  borderColor: Colors.stroke,
+                  borderColor: theme.stroke,
                   borderRadius: 10,
                   padding: 20,
                 }}
@@ -254,7 +259,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             style={{
               fontFamily: Fonts.cardParagraph.fontFamily,
               fontSize: Fonts.cardParagraph.fontSize,
-              color: Colors.textSecondary,
+              color: theme.textSecondary,
               marginTop: 8,
             }}
           >
@@ -270,12 +275,13 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
           marginTop: 42,
         }}
       >
-        <Pressable onPress={() => navigation.navigate("Home")}
+        <Pressable
+          onPress={() => navigation.navigate("Home")}
           style={{
             height: 48,
-            backgroundColor: Colors.buttonSecondaryFill,
+            backgroundColor: theme.buttonSecondaryFill,
             borderWidth: 1,
-            borderColor: Colors.buttonSecondaryStroke,
+            borderColor: theme.buttonSecondaryStroke,
             borderRadius: 10,
             alignItems: "center",
             justifyContent: "center",
@@ -285,23 +291,26 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             style={{
               fontFamily: Fonts.button.fontFamily,
               fontSize: Fonts.button.fontSize,
-              color: Colors.buttonSecondaryText,
+              color: theme.buttonSecondaryText,
             }}
           >
             Go back to Home
           </Text>
         </Pressable>
 
-        <View style={{
+        <View
+          style={{
             height: 10,
-        }}></View>
+          }}
+        ></View>
 
-        <Pressable onPress={openPlaylistInSpotify}
+        <Pressable
+          onPress={openPlaylistInSpotify}
           style={{
             height: 48,
-            backgroundColor: Colors.buttonMainFill,
+            backgroundColor: theme.buttonMainFill,
             borderWidth: 1,
-            borderColor: Colors.buttonMainStroke,
+            borderColor: theme.buttonMainStroke,
             borderRadius: 10,
             alignItems: "center",
             justifyContent: "center",
@@ -311,7 +320,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             style={{
               fontFamily: Fonts.button.fontFamily,
               fontSize: Fonts.button.fontSize,
-              color: Colors.buttonMainText,
+              color: theme.buttonMainText,
             }}
           >
             Open in Spotify

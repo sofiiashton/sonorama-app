@@ -6,8 +6,8 @@ import {
   ScrollView,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors, Spacing } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import {
   ArrowLeftRegular,
   ArrowSortRegular,
@@ -17,8 +17,11 @@ import { Linking, Pressable } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
+import themeContext from "../theme/themeContext.js";
 
 const AllPlaylistsScreen = ({ navigation }) => {
+  const theme = useContext(themeContext);
+
   const [userProfile, setUserProfile] = useState([]);
 
   const getProfile = async () => {
@@ -137,7 +140,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
               height: 163,
               width: 161,
               borderRadius: 10,
-              backgroundColor: Colors.optionDisabledFill,
+              backgroundColor: theme.optionDisabledFill,
             }}
           />
         )}
@@ -148,6 +151,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
             fontSize: Fonts.cardTitle.fontSize,
             marginTop: 12,
             width: 145,
+            color: theme.textDefault,
           }}
         >
           {item.name}
@@ -156,7 +160,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
           style={{
             fontFamily: Fonts.cardParagraph.fontFamily,
             fontSize: Fonts.cardParagraph.fontSize,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
             marginTop: 2,
           }}
         >
@@ -167,12 +171,12 @@ const AllPlaylistsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 76,
@@ -186,13 +190,13 @@ const AllPlaylistsScreen = ({ navigation }) => {
           }}
           onPress={() => navigation.goBack()}
         >
-          <ArrowLeftRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+          <ArrowLeftRegular color={theme.textSecondary} width={20} />
         </Pressable>
         <Text
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           All playlists
@@ -208,12 +212,12 @@ const AllPlaylistsScreen = ({ navigation }) => {
           marginTop: 18,
         }}
       >
-        <ArrowSortRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+        <ArrowSortRegular color={theme.textSecondary} width={20} />
         <Text
           style={{
             marginLeft: 6,
             marginRight: 12,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
           }}
         >
           Sort by:
@@ -222,12 +226,12 @@ const AllPlaylistsScreen = ({ navigation }) => {
           style={{
             backgroundColor:
               sortBy === "Recent"
-                ? Colors.optionSelectedFill
-                : Colors.optionDisabledFill,
+                ? theme.optionSelectedFill
+                : theme.optionDisabledFill,
             borderColor:
               sortBy === "Recent"
-                ? Colors.optionSelectedStroke
-                : Colors.optionDisabledStroke,
+                ? theme.optionSelectedStroke
+                : theme.optionDisabledStroke,
             borderWidth: 1,
             borderRadius: 8,
             paddingLeft: 14,
@@ -242,8 +246,8 @@ const AllPlaylistsScreen = ({ navigation }) => {
             style={{
               color:
                 sortBy === "Recent"
-                  ? Colors.optionSelectedText
-                  : Colors.optionDisabledText,
+                  ? theme.optionSelectedText
+                  : theme.optionDisabledText,
               fontFamily: Fonts.baseFont.fontFamily,
               fontSize: Fonts.baseFont.fontSize,
             }}
@@ -255,12 +259,12 @@ const AllPlaylistsScreen = ({ navigation }) => {
           style={{
             backgroundColor:
               sortBy === "A-Z"
-                ? Colors.optionSelectedFill
-                : Colors.optionDisabledFill,
+                ? theme.optionSelectedFill
+                : theme.optionDisabledFill,
             borderColor:
               sortBy === "A-Z"
-                ? Colors.optionSelectedStroke
-                : Colors.optionDisabledStroke,
+                ? theme.optionSelectedStroke
+                : theme.optionDisabledStroke,
             borderWidth: 1,
             borderRadius: 8,
             paddingLeft: 12,
@@ -275,8 +279,8 @@ const AllPlaylistsScreen = ({ navigation }) => {
             style={{
               color:
                 sortBy === "A-Z"
-                  ? Colors.optionSelectedText
-                  : Colors.optionDisabledText,
+                  ? theme.optionSelectedText
+                  : theme.optionDisabledText,
               fontFamily: Fonts.baseFont.fontFamily,
               fontSize: Fonts.baseFont.fontSize,
             }}
@@ -288,12 +292,12 @@ const AllPlaylistsScreen = ({ navigation }) => {
           style={{
             backgroundColor:
               sortBy === "Z-A"
-                ? Colors.optionSelectedFill
-                : Colors.optionDisabledFill,
+                ? theme.optionSelectedFill
+                : theme.optionDisabledFill,
             borderColor:
               sortBy === "Z-A"
-                ? Colors.optionSelectedStroke
-                : Colors.optionDisabledStroke,
+                ? theme.optionSelectedStroke
+                : theme.optionDisabledStroke,
             borderWidth: 1,
             borderRadius: 8,
             paddingLeft: 12,
@@ -308,8 +312,8 @@ const AllPlaylistsScreen = ({ navigation }) => {
             style={{
               color:
                 sortBy === "Z-A"
-                  ? Colors.optionSelectedText
-                  : Colors.optionDisabledText,
+                  ? theme.optionSelectedText
+                  : theme.optionDisabledText,
               fontFamily: Fonts.baseFont.fontFamily,
               fontSize: Fonts.baseFont.fontSize,
             }}

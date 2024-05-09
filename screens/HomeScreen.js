@@ -1,13 +1,15 @@
 import { StyleSheet, Text, SafeAreaView, View, ScrollView } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Fonts, Colors, Spacing } from "../config/index.js";
+import { Fonts } from "../config/index.js";
 import { Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import themeContext from "../theme/themeContext.js";
 // import LocalizedStrings from 'react-native-localization';
 // import en from "../locales/en";
 
 const HomeScreen = () => { 
+  const theme = useContext(themeContext);
 
   const navigation = useNavigation();
 
@@ -50,12 +52,12 @@ const HomeScreen = () => {
   console.log(userProfile);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingBottom: 24,
           paddingLeft: 24,
           paddingRight: 24,
@@ -66,7 +68,7 @@ const HomeScreen = () => {
           style={{
             fontFamily: Fonts.screenTitleSecondary.fontFamily,
             fontSize: Fonts.screenTitleSecondary.fontSize,
-            color: Colors.textGreeting,
+            color: theme.textGreeting,
           }}
         >
           {message}
@@ -75,7 +77,7 @@ const HomeScreen = () => {
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           {username}
@@ -90,10 +92,10 @@ const HomeScreen = () => {
 
       <View
         style={{
-          backgroundColor: Colors.blueCardBackground,
+          backgroundColor: theme.blueCardBackground,
           borderRadius: 20,
           borderWidth: 1,
-          borderColor: Colors.blueCardStroke,
+          borderColor: theme.blueCardStroke,
           marginLeft: 24,
           marginRight: 24,
         }}
@@ -119,7 +121,7 @@ const HomeScreen = () => {
 
           <View
             style={{
-              borderTopColor: Colors.stroke,
+              borderTopColor: theme.stroke,
               borderTopWidth: 1,
             }}
           >
@@ -127,7 +129,7 @@ const HomeScreen = () => {
               style={{
                 fontFamily: Fonts.cardTitle.fontFamily,
                 fontSize: Fonts.cardTitle.fontSize,
-                color: Colors.textDefault,
+                color: theme.textDefault,
                 paddingLeft: 20,
                 paddingRight: 20,
                 marginTop: 16,
@@ -139,7 +141,7 @@ const HomeScreen = () => {
               style={{
                 fontFamily: Fonts.cardParagraph.fontFamily,
                 fontSize: Fonts.cardParagraph.fontSize,
-                color: Colors.textSecondary,
+                color: theme.textSecondary,
                 marginTop: 6,
                 marginBottom: 20,
                 paddingLeft: 20,
@@ -160,10 +162,10 @@ const HomeScreen = () => {
 
       <View
         style={{
-          backgroundColor: Colors.cardBackround,
+          backgroundColor: theme.cardBackground,
           borderRadius: 20,
           borderWidth: 1,
-          borderColor: Colors.cardStroke,
+          borderColor: theme.cardStroke,
           marginLeft: 24,
           marginRight: 24,
         }}
@@ -192,7 +194,7 @@ const HomeScreen = () => {
               style={{
                 fontFamily: Fonts.cardTitle.fontFamily,
                 fontSize: Fonts.cardTitle.fontSize,
-                color: Colors.textDefault,
+                color: theme.textDefault,
                 paddingLeft: 20,
                 paddingRight: 20,
               }}
@@ -203,7 +205,7 @@ const HomeScreen = () => {
               style={{
                 fontFamily: Fonts.cardParagraph.fontFamily,
                 fontSize: Fonts.cardParagraph.fontSize,
-                color: Colors.textSecondary,
+                color: theme.textSecondary,
                 marginTop: 6,
                 marginBottom: 20,
                 paddingLeft: 20,
@@ -214,8 +216,8 @@ const HomeScreen = () => {
             </Text>
             <Pressable
               style={{
-                backgroundColor: Colors.buttonMainFill,
-                borderColor: Colors.buttonMainStroke,
+                backgroundColor: theme.buttonMainFill,
+                borderColor: theme.buttonMainStroke,
                 borderWidth: 1,
                 textAlign: "center",
                 fontFamily: Fonts.button.fontFamily,
@@ -236,7 +238,7 @@ const HomeScreen = () => {
                 style={{
                   fontFamily: Fonts.button.fontFamily,
                   fontSize: Fonts.button.fontSize,
-                  color: Colors.buttonMainText,
+                  color: theme.buttonMainText,
                 }}
               >
                 Start generating

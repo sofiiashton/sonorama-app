@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
-import React, { useEffect, useState } from "react";
-import { Fonts, Colors, Spacing } from "../config/index.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Fonts } from "../config/index.js";
 import {
   ArrowSortRegular,
   ArrowRightRegular,
@@ -10,8 +10,10 @@ import { Linking, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useIsFocused,  useNavigation } from "@react-navigation/native";
+import themeContext from "../theme/themeContext.js";
 
 const LibraryScreen = () => {
+  const theme = useContext(themeContext);
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
@@ -142,7 +144,7 @@ const LibraryScreen = () => {
               height: 163,
               width: 161,
               borderRadius: 10,
-              backgroundColor: Colors.optionDisabledFill,
+              backgroundColor: theme.optionDisabledFill,
             }}
           />
         )}
@@ -153,6 +155,7 @@ const LibraryScreen = () => {
             fontSize: Fonts.cardTitle.fontSize,
             marginTop: 12,
             width: 145,
+            color: theme.textDefault,
           }}
         >
           {item.name}
@@ -161,7 +164,7 @@ const LibraryScreen = () => {
           style={{
             fontFamily: Fonts.cardParagraph.fontFamily,
             fontSize: Fonts.cardParagraph.fontSize,
-            color: Colors.textSecondary,
+            color: theme.textSecondary,
             marginTop: 2,
           }}
         >
@@ -172,12 +175,12 @@ const LibraryScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <View
         style={{
           height: 150,
           borderBottomWidth: 1,
-          borderBottomColor: Colors.stroke,
+          borderBottomColor: theme.stroke,
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 94,
@@ -187,7 +190,7 @@ const LibraryScreen = () => {
           style={{
             fontFamily: Fonts.screenTitle.fontFamily,
             fontSize: Fonts.screenTitle.fontSize,
-            color: Colors.screenTitle,
+            color: theme.textDefault,
           }}
         >
           Your library
@@ -204,12 +207,12 @@ const LibraryScreen = () => {
             marginTop: 18,
           }}
         >
-          <ArrowSortRegular color="rgba(0, 0, 0, 0.4)" width={20} />
+          <ArrowSortRegular color={theme.textSecondary} width={20} />
           <Text
             style={{
               marginLeft: 6,
               marginRight: 12,
-              color: Colors.textSecondary,
+              color: theme.textSecondary,
             }}
           >
             Sort by:
@@ -218,12 +221,12 @@ const LibraryScreen = () => {
             style={{
               backgroundColor:
                 sortBy === "Recent"
-                  ? Colors.optionSelectedFill
-                  : Colors.optionDisabledFill,
+                  ? theme.optionSelectedFill
+                  : theme.optionDisabledFill,
               borderColor:
                 sortBy === "Recent"
-                  ? Colors.optionSelectedStroke
-                  : Colors.optionDisabledStroke,
+                  ? theme.optionSelectedStroke
+                  : theme.optionDisabledStroke,
               borderWidth: 1,
               borderRadius: 8,
               paddingLeft: 14,
@@ -238,8 +241,8 @@ const LibraryScreen = () => {
               style={{
                 color:
                   sortBy === "Recent"
-                    ? Colors.optionSelectedText
-                    : Colors.optionDisabledText,
+                    ? theme.optionSelectedText
+                    : theme.optionDisabledText,
                 fontFamily: Fonts.baseFont.fontFamily,
                 fontSize: Fonts.baseFont.fontSize,
               }}
@@ -251,12 +254,12 @@ const LibraryScreen = () => {
             style={{
               backgroundColor:
                 sortBy === "A-Z"
-                  ? Colors.optionSelectedFill
-                  : Colors.optionDisabledFill,
+                  ? theme.optionSelectedFill
+                  : theme.optionDisabledFill,
               borderColor:
                 sortBy === "A-Z"
-                  ? Colors.optionSelectedStroke
-                  : Colors.optionDisabledStroke,
+                  ? theme.optionSelectedStroke
+                  : theme.optionDisabledStroke,
               borderWidth: 1,
               borderRadius: 8,
               paddingLeft: 12,
@@ -271,8 +274,8 @@ const LibraryScreen = () => {
               style={{
                 color:
                   sortBy === "A-Z"
-                    ? Colors.optionSelectedText
-                    : Colors.optionDisabledText,
+                    ? theme.optionSelectedText
+                    : theme.optionDisabledText,
                 fontFamily: Fonts.baseFont.fontFamily,
                 fontSize: Fonts.baseFont.fontSize,
               }}
@@ -284,12 +287,12 @@ const LibraryScreen = () => {
             style={{
               backgroundColor:
                 sortBy === "Z-A"
-                  ? Colors.optionSelectedFill
-                  : Colors.optionDisabledFill,
+                  ? theme.optionSelectedFill
+                  : theme.optionDisabledFill,
               borderColor:
                 sortBy === "Z-A"
-                  ? Colors.optionSelectedStroke
-                  : Colors.optionDisabledStroke,
+                  ? theme.optionSelectedStroke
+                  : theme.optionDisabledStroke,
               borderWidth: 1,
               borderRadius: 8,
               paddingLeft: 12,
@@ -304,8 +307,8 @@ const LibraryScreen = () => {
               style={{
                 color:
                   sortBy === "Z-A"
-                    ? Colors.optionSelectedText
-                    : Colors.optionDisabledText,
+                    ? theme.optionSelectedText
+                    : theme.optionDisabledText,
                 fontFamily: Fonts.baseFont.fontFamily,
                 fontSize: Fonts.baseFont.fontSize,
               }}
@@ -348,13 +351,13 @@ const LibraryScreen = () => {
                 style={{
                   fontFamily: Fonts.seeAll.fontFamily,
                   fontSize: Fonts.seeAll.fontSize,
-                  color: Colors.textSeeAll,
+                  color: theme.textSeeAll,
                   marginRight: 6,
                 }}
               >
                 See all
               </Text>
-              <ArrowRightRegular color={Colors.textSeeAll} width={17} />
+              <ArrowRightRegular color={theme.textSeeAll} width={17} />
             </Pressable>
           </View>
         </View> */}
@@ -377,7 +380,7 @@ const LibraryScreen = () => {
               style={{
                 fontFamily: Fonts.sectionTitle.fontFamily,
                 fontSize: Fonts.sectionTitle.fontSize,
-                color: "black",
+                color: theme.textDefault,
               }}
             >
               Recent playlists
@@ -393,13 +396,13 @@ const LibraryScreen = () => {
                 style={{
                   fontFamily: Fonts.seeAll.fontFamily,
                   fontSize: Fonts.seeAll.fontSize,
-                  color: Colors.textSeeAll,
+                  color: theme.textSeeAll,
                   marginRight: 6,
                 }}
               >
                 See all
               </Text>
-              <ArrowRightRegular color={Colors.textSeeAll} width={17} />
+              <ArrowRightRegular color={theme.textSeeAll} width={17} />
             </Pressable>
           </View>
         </View>
@@ -452,7 +455,7 @@ const LibraryScreen = () => {
                 style={{
                   fontFamily: Fonts.cardParagraph.fontFamily,
                   fontSize: Fonts.cardParagraph.fontSize,
-                  color: Colors.textSecondary,
+                  color: theme.textSecondary,
                   alignSelf: "center",
                   marginTop: 6,
                   marginBottom: 12,
@@ -511,7 +514,7 @@ const LibraryScreen = () => {
                 style={{
                   fontFamily: Fonts.cardParagraph.fontFamily,
                   fontSize: Fonts.cardParagraph.fontSize,
-                  color: Colors.textSecondary,
+                  color: theme.textSecondary,
                   alignSelf: "center",
                   marginTop: 6,
                   marginBottom: 12,
