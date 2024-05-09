@@ -328,7 +328,7 @@ const SettingsScreen = ({ navigation }) => {
                     EventRegister.emit("Change Theme", !darkMode);
                   }}
                   backgroundColorOn={theme.buttonMainFill}
-                  backgroundColorOff={theme.textSecondary}
+                  backgroundColorOff={theme.tooltipText}
                   circleColorOff="white"
                   circleColorOn="white"
                   duration={300}
