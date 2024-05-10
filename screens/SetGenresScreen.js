@@ -16,9 +16,11 @@ import {
 } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const SetGenresScreen = ({ navigation, route }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const { selectedMoods } = route.params;
 
@@ -58,7 +60,7 @@ const SetGenresScreen = ({ navigation, route }) => {
     }
   };
 
-  const renderButton = (genre) => {
+  const renderButton = (genre, genreText) => {
     const isSelected = selectedGenres.includes(genre);
     return (
       <Pressable
@@ -111,7 +113,7 @@ const SetGenresScreen = ({ navigation, route }) => {
                 },
           ]}
         >
-          {genre}
+          {genreText}
         </Text>
       </Pressable>
     );
@@ -150,7 +152,7 @@ const SetGenresScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Playlist Generator
+          {lang.playlistGeneratorTitle}
         </Text>
       </View>
 
@@ -181,8 +183,7 @@ const SetGenresScreen = ({ navigation, route }) => {
             flexWrap: "wrap",
           }}
         >
-          Sonorama analyzes your Spotify profile to give you personalized
-          playlists catered to your tastes.
+          {lang.tooltip}
         </Text>
       </View>
 
@@ -200,7 +201,7 @@ const SetGenresScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          What genres do you want to have in this playlist?
+          {lang.selectGenresSectionTitle}
         </Text>
         <Text
           style={{
@@ -210,7 +211,7 @@ const SetGenresScreen = ({ navigation, route }) => {
             marginTop: 8,
           }}
         >
-          Select up to five genres.
+          {lang.selectGenresSectionParagraph}
         </Text>
       </View>
 
@@ -226,7 +227,7 @@ const SetGenresScreen = ({ navigation, route }) => {
         }}
       >
         <Image
-          source={require("../assets/img/generate-playlist.png")}
+          source={require("../assets/img/genre.png")}
           style={{
             width: "100%",
             height: "100%",
@@ -244,17 +245,17 @@ const SetGenresScreen = ({ navigation, route }) => {
           marginRight: 24,
         }}
       >
-        {renderButton("Alternative")}
-        {renderButton("Pop")}
-        {renderButton("Hip-Hop")}
-        {renderButton("R&B")}
-        {renderButton("Rock")}
-        {renderButton("Electronic")}
-        {renderButton("Trip-hop")}
-        {renderButton("Art pop")}
-        {renderButton("Jazz")}
-        {renderButton("Soul")}
-        {renderButton("Classical")}
+        {renderButton("Alternative", lang.alternative)}
+        {renderButton("Pop", lang.pop)}
+        {renderButton("Hip-Hop", lang.hipHop)}
+        {renderButton("R&B", lang.rnb)}
+        {renderButton("Rock", lang.rock)}
+        {renderButton("Electronic", lang.electronic)}
+        {renderButton("Trip-hop", lang.tripHop)}
+        {renderButton("Art pop", lang.artPop)}
+        {renderButton("Jazz", lang.jazz)}
+        {renderButton("Soul", lang.soul)}
+        {renderButton("Classical", lang.classical)}
       </View>
 
       <View
@@ -266,10 +267,14 @@ const SetGenresScreen = ({ navigation, route }) => {
       >
         <Pressable
           onPress={() => {
-            navigation.navigate("SetPlaylistSettings", {
-              selectedGenres: selectedGenres,
-              selectedMoods: selectedMoods,
-            });
+            if (selectedGenres.length === 0) {
+              alert(lang.chooseAtLeastOneGenreMessage);
+            } else {
+              navigation.navigate("SetPlaylistSettings", {
+                selectedGenres: selectedGenres,
+                selectedMoods: selectedMoods,
+              });
+            }
           }}
           style={{
             alignItems: "center",
@@ -290,7 +295,7 @@ const SetGenresScreen = ({ navigation, route }) => {
               marginRight: 4,
             }}
           >
-            Continue
+            {lang.continue}
           </Text>
           <ArrowRightRegular width={16} color="white" />
         </Pressable>

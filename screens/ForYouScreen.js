@@ -13,9 +13,11 @@ import { ArrowLeftRegular } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import { ScrollView } from "react-native-virtualized-view";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const ForYouScreen = ({ navigation, route }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const [userProfile, setUserProfile] = useState([]);
 
@@ -221,7 +223,7 @@ const ForYouScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          For you
+          {lang.forYouScreenTitle}
         </Text>
       </View>
 
@@ -239,7 +241,7 @@ const ForYouScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Here are some recommendations based on your recent activity
+          {lang.forYouSectionTitle}
         </Text>
 
         <Text
@@ -250,7 +252,7 @@ const ForYouScreen = ({ navigation, route }) => {
             marginTop: 8,
           }}
         >
-          Save them into a playlist to access them at any time.
+          {lang.forYouSectionParagraph}
         </Text>
       </View>
 
@@ -314,6 +316,7 @@ const ForYouScreen = ({ navigation, route }) => {
                       fontFamily: Fonts.trackArtist.fontFamily,
                       fontSize: Fonts.trackArtist.fontSize,
                       color: theme.textSecondary,
+                      marginTop: 2,
                     }}
                     numberOfLines={1}
                     ellipsizeMode="tail"
@@ -351,7 +354,7 @@ const ForYouScreen = ({ navigation, route }) => {
               marginLeft: 24,
             }}
           >
-            Loading recommendations...
+            {lang.loadingRecommendations}
           </Text>
         )}
       </View>
@@ -383,7 +386,7 @@ const ForYouScreen = ({ navigation, route }) => {
               color: "white",
             }}
           >
-            Save playlist to Spotify
+            {lang.forYouSavePlaylist}
           </Text>
         </Pressable>
       </View>

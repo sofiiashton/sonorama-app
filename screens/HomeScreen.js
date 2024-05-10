@@ -5,11 +5,11 @@ import { Fonts } from "../config/index.js";
 import { Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import themeContext from "../theme/themeContext.js";
-// import LocalizedStrings from 'react-native-localization';
-// import en from "../locales/en";
+import langContext from "../lang/langContext.js";
 
 const HomeScreen = () => { 
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const navigation = useNavigation();
 
@@ -18,11 +18,11 @@ const HomeScreen = () => {
   const greetingMsg = () => {
     const currentTime = new Date().getHours();
     if (currentTime < 12) {
-      return "Good morning,";
+      return lang.goodMorning;
     } else if (currentTime < 17) {
-      return "Good afternoon,";
+      return lang.goodAfternoon;
     } else {
-      return "Good evening,";
+      return lang.goodEvening;
     }
   };
   const message = greetingMsg();
@@ -135,7 +135,7 @@ const HomeScreen = () => {
                 marginTop: 16,
               }}
             >
-              For you
+              {lang.homeForYouTitle}
             </Text>
             <Text
               style={{
@@ -148,7 +148,7 @@ const HomeScreen = () => {
                 paddingRight: 20,
               }}
             >
-              A daily playlist based on your current obsessions.
+              {lang.homeForYouParagraph}
             </Text>
           </View>
         </Pressable>
@@ -199,7 +199,7 @@ const HomeScreen = () => {
                 paddingRight: 20,
               }}
             >
-              Playlist Generator
+              {lang.homePlaylistGeneratorTitle}
             </Text>
             <Text
               style={{
@@ -212,7 +212,7 @@ const HomeScreen = () => {
                 paddingRight: 20,
               }}
             >
-              Get playlists based on your mood and preferences.
+              {lang.homePlaylistGeneratorParagraph}
             </Text>
             <Pressable
               style={{
@@ -241,7 +241,7 @@ const HomeScreen = () => {
                   color: theme.buttonMainText,
                 }}
               >
-                Start generating
+                {lang.homeStartGenerating}
               </Text>
             </Pressable>
           </View>

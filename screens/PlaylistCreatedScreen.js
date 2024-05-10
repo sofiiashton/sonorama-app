@@ -13,9 +13,11 @@ import { DismissRegular } from "@fluentui/react-native-icons";
 import { Picker } from "@react-native-picker/picker";
 import { ScrollView } from "react-native-virtualized-view";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const PlaylistCreatedScreen = ({ navigation, route }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const playlistId = route.params.playlistId;
 
@@ -123,12 +125,15 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
                 fontSize: Fonts.trackTitle.fontSize,
                 flex: 1,
                 color: theme.textDefault,
+                marginTop: 4,
               }}
             >
               {track.name}
             </Text>
 
             <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
               style={{
                 fontFamily: Fonts.trackArtist.fontFamily,
                 fontSize: Fonts.trackArtist.fontSize,
@@ -151,6 +156,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               fontFamily: Fonts.trackArtist.fontFamily,
               fontSize: Fonts.trackArtist.fontSize,
               color: theme.textSecondary,
+              marginLeft: 4,
             }}
           >
             {formattedDuration}
@@ -192,7 +198,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Your playlist
+          {lang.yourPlaylist}
         </Text>
         <Pressable
           style={{
@@ -218,7 +224,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Playlist created!
+          {lang.playlistCreated}
         </Text>
 
         {playlistDetails ? (
@@ -231,7 +237,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
                 marginTop: 8,
               }}
             >
-              You can now access '{playlistDetails.name}' on Spotify.
+              {lang.playlistCreatedParagraph1} '{playlistDetails.name}' {lang.playlistCreatedParagraph2}
             </Text>
             <View
               style={{
@@ -263,7 +269,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               marginTop: 8,
             }}
           >
-            Loading playlist details...
+            {lang.loadingPlaylist}
           </Text>
         )}
       </View>
@@ -294,7 +300,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               color: theme.buttonSecondaryText,
             }}
           >
-            Go back to Home
+            {lang.goBackHome}
           </Text>
         </Pressable>
 
@@ -323,7 +329,7 @@ const PlaylistCreatedScreen = ({ navigation, route }) => {
               color: theme.buttonMainText,
             }}
           >
-            Open in Spotify
+            {lang.openInSpotify}
           </Text>
         </Pressable>
       </View>

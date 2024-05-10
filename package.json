@@ -27,6 +27,7 @@
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-actions-sheet": "^0.9.3",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-element-dropdown": "^2.12.0",
     "react-native-event-listeners": "^1.0.7",
     "react-native-localization": "^2.3.2",

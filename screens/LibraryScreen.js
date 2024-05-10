@@ -9,11 +9,14 @@ import {
 import { Linking, Pressable, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useIsFocused,  useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const LibraryScreen = () => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
+
   const navigation = useNavigation();
 
   const isFocused = useIsFocused();
@@ -168,7 +171,7 @@ const LibraryScreen = () => {
             marginTop: 2,
           }}
         >
-          {item.tracks.total} songs
+          {item.tracks.total} {lang.songs}
         </Text>
       </Pressable>
     );
@@ -193,7 +196,7 @@ const LibraryScreen = () => {
             color: theme.textDefault,
           }}
         >
-          Your library
+          {lang.yourLibrary}
         </Text>
       </View>
 
@@ -207,7 +210,31 @@ const LibraryScreen = () => {
             marginTop: 18,
           }}
         >
-          <ArrowSortRegular color={theme.textSecondary} width={20} />
+          {lang === "en" ? (
+            <>
+              <ArrowSortRegular
+                color={theme.textSecondary}
+                width={20}
+                marginRight={14}
+              />
+              <Text
+                style={{
+                  marginLeft: 6,
+                  marginRight: 12,
+                  color: theme.textSecondary,
+                }}
+              >
+                {lang.sortBy}
+              </Text>
+            </>
+          ) : (
+            <ArrowSortRegular
+              color={theme.textSecondary}
+              width={20}
+              marginRight={14}
+            />
+          )}
+          {/* <ArrowSortRegular color={theme.textSecondary} width={20} marginRight={14}/>
           <Text
             style={{
               marginLeft: 6,
@@ -215,8 +242,8 @@ const LibraryScreen = () => {
               color: theme.textSecondary,
             }}
           >
-            Sort by:
-          </Text>
+            {lang.sortBy}
+          </Text> */}
           <Pressable
             style={{
               backgroundColor:
@@ -247,7 +274,7 @@ const LibraryScreen = () => {
                 fontSize: Fonts.baseFont.fontSize,
               }}
             >
-              Recent
+              {lang.recent}
             </Text>
           </Pressable>
           <Pressable
@@ -383,7 +410,7 @@ const LibraryScreen = () => {
                 color: theme.textDefault,
               }}
             >
-              Recent playlists
+              {lang.recentPlaylists}
             </Text>
             <Pressable
               style={{
@@ -400,7 +427,7 @@ const LibraryScreen = () => {
                   marginRight: 6,
                 }}
               >
-                See all
+                {lang.seeAll}
               </Text>
               <ArrowRightRegular color={theme.textSeeAll} width={17} />
             </Pressable>

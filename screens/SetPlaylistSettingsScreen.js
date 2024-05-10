@@ -23,9 +23,11 @@ import CheckBox from "@react-native-community/checkbox";
 import LoadingSpinner from "../assets/loading.gif";
 import themeContext from "../theme/themeContext.js";
 import theme from "../theme/theme.js";
+import langContext from "../lang/langContext.js";
 
 const SetPlaylistSettingsScreen = ({ navigation, route }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const moodParameters = {
     Chill: { target_energy: 0.2, max_energy: 0.5, max_tempo: 120 },
@@ -333,7 +335,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Playlist Generator
+          {lang.playlistGeneratorTitle}
         </Text>
       </View>
 
@@ -351,7 +353,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Give your playlist a name
+          {lang.givePlaylistName}
         </Text>
 
         <Text
@@ -362,7 +364,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             marginTop: 8,
           }}
         >
-          This step is optional.
+          {lang.optionalStep}
         </Text>
       </View>
 
@@ -458,7 +460,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
             color: theme.textDefault,
           }}
         >
-          Playlist size: {playlistSize} songs
+          {lang.playlistSize} {playlistSize} {lang.songs}
         </Text>
 
         <View
@@ -574,7 +576,7 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
                 fontSize: Fonts.button.fontSize,
               }}
             >
-              Generate playlist
+              {lang.generatePlaylistButton}
             </Text>
           )}
         </Pressable>

@@ -19,12 +19,15 @@ import SwitchToggle from "react-native-switch-toggle";
 
 import { EventRegister } from "react-native-event-listeners";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const SettingsScreen = ({ navigation }) => {
-  // const selectedLanguage = "";
-
   const theme = useContext(themeContext);
   const [darkMode, setDarkMode] = useState(false);
+
+  const lang = useContext(langContext);
+  const [eng, setEng] = useState(false);
 
   const [userProfile, setUserProfile] = useState(null);
 
@@ -95,7 +98,7 @@ const SettingsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          Settings
+          {lang.settingsTitle}
         </Text>
       </View>
 
@@ -114,7 +117,7 @@ const SettingsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          Connected account
+          {lang.connectedAccount}
         </Text>
         <View
           style={{
@@ -191,7 +194,7 @@ const SettingsScreen = ({ navigation }) => {
                   color: theme.openInSpotifyText,
                 }}
               >
-                Open in Spotify
+                {lang.openInSpotify}
               </Text>
             </Pressable>
           </View>
@@ -217,7 +220,7 @@ const SettingsScreen = ({ navigation }) => {
               alignSelf: "center",
             }}
           >
-            Log out
+            {lang.logOut}
           </Text>
         </Pressable>
       </View>
@@ -236,7 +239,7 @@ const SettingsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          Application Settings
+          {lang.applicationSettings}
         </Text>
 
         <View
@@ -273,8 +276,36 @@ const SettingsScreen = ({ navigation }) => {
                     color: theme.textDefault,
                   }}
                 >
-                  Language
+                  {lang.language}
                 </Text>
+              </View>
+
+              <View>
+                <Pressable style={{
+                  backgroundColor: theme.optionDisabledFill,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  borderColor: theme.optionDisabledStroke,
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  paddingTop: 8,
+                  paddingBottom: 8,
+                  overflow: 'hidden',
+                }}>
+                  <Text
+                    onPress={() => {
+                      setEng(!eng);
+                      EventRegister.emit("Change Language", !eng);
+                    }}
+                    style={{
+                      fontFamily: Fonts.button.fontFamily,
+                      fontSize: Fonts.button.fontSize,
+                      color: theme.textDefault,
+                    }}
+                  >
+                    {lang.changeLanguage}
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -303,7 +334,7 @@ const SettingsScreen = ({ navigation }) => {
                     color: theme.textDefault,
                   }}
                 >
-                  Dark mode
+                  {lang.darkMode}
                 </Text>
               </View>
 
@@ -331,7 +362,6 @@ const SettingsScreen = ({ navigation }) => {
                   backgroundColorOff={theme.tooltipText}
                   circleColorOff="white"
                   circleColorOn="white"
-                  duration={300}
                 />
               </View>
             </View>

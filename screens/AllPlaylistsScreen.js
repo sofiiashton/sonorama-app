@@ -18,9 +18,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const AllPlaylistsScreen = ({ navigation }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const [userProfile, setUserProfile] = useState([]);
 
@@ -164,7 +166,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
             marginTop: 2,
           }}
         >
-          {item.tracks.total} songs
+          {item.tracks.total} {lang.songs}
         </Text>
       </Pressable>
     );
@@ -199,7 +201,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          All playlists
+          {lang.allPlaylists}
         </Text>
       </View>
 
@@ -212,16 +214,30 @@ const AllPlaylistsScreen = ({ navigation }) => {
           marginTop: 18,
         }}
       >
-        <ArrowSortRegular color={theme.textSecondary} width={20} />
-        <Text
-          style={{
-            marginLeft: 6,
-            marginRight: 12,
-            color: theme.textSecondary,
-          }}
-        >
-          Sort by:
-        </Text>
+        {lang === "en" ? (
+          <>
+            <ArrowSortRegular
+              color={theme.textSecondary}
+              width={20}
+              marginRight={14}
+            />
+            <Text
+              style={{
+                marginLeft: 6,
+                marginRight: 12,
+                color: theme.textSecondary,
+              }}
+            >
+              {lang.sortBy}
+            </Text>
+          </>
+        ) : (
+          <ArrowSortRegular
+            color={theme.textSecondary}
+            width={20}
+            marginRight={14}
+          />
+        )}
         <Pressable
           style={{
             backgroundColor:
@@ -252,7 +268,7 @@ const AllPlaylistsScreen = ({ navigation }) => {
               fontSize: Fonts.baseFont.fontSize,
             }}
           >
-            Recent
+            {lang.recent}
           </Text>
         </Pressable>
         <Pressable

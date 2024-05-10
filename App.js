@@ -7,7 +7,8 @@ import { navigate } from "./StackNavigator";
 import { EventRegister } from "react-native-event-listeners";
 import theme from "./theme/theme";
 import themeContext from "./theme/themeContext";
-
+import lang from "./lang/lang";
+import langContext from "./lang/langContext";
 
 const handleErrorResponse = async (error) => {
   if (error.response && error.response.status === 401) {
@@ -20,23 +21,29 @@ const handleErrorResponse = async (error) => {
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
+  const [eng, setEng] = useState(false);
+
   useEffect(() => {
-    const listener = EventRegister.addEventListener("Change Theme", (data) => {
+    const themeListener = EventRegister.addEventListener("Change Theme", (data) => {
       setDarkMode(data);
     });
+    const langListener = EventRegister.addEventListener("Change Language", (data) => {
+      setEng(data);
+    });
     return () => {
-      EventRegister.removeAllListeners(listener);
+      EventRegister.removeEventListener(themeListener);
+      EventRegister.removeEventListener(langListener);
     };
-  }, [darkMode]);
+  }, []);
+  
 
   return (
-    // <>
-    //   <Navigation/>
-    // </>
     <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
-      <>
-        <Navigation />
-      </>
+      <langContext.Provider value={eng === true ? lang.en : lang.uk}>
+        <>
+          <Navigation />
+        </>
+      </langContext.Provider>
     </themeContext.Provider>
   );
 }
@@ -49,3 +56,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+  // useEffect(() => {
+  //   const listenerDarkMode = EventRegister.addEventListener("Change Theme", (data) => {
+  //     setDarkMode(data);
+  //   });
+  //   return () => {
+  //     EventRegister.removeAllListeners(listenerDarkMode);
+  //   };
+  // }, [darkMode]);
+
+  // useEffect(() => {
+  //   const listenerLang = EventRegister.addEventListener("Change Language", (data) => {
+  //       setEng(data);
+  //     }
+  //   );
+  //   return () => {
+  //     EventRegister.removeAllListeners(listenerLang);
+  //   };
+  // }, [eng]);

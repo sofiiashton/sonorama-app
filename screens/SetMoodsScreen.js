@@ -19,9 +19,11 @@ import axios from "axios";
 import { useRoute } from "@react-navigation/native";
 import themeContext from "../theme/themeContext.js";
 import theme from "../theme/theme.js";
+import langContext from "../lang/langContext.js";
 
 const SetMoodsScreen = ({ navigation }) => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext);
 
   const [userProfile, setUserProfile] = useState([]);
 
@@ -59,7 +61,7 @@ const SetMoodsScreen = ({ navigation }) => {
     }
   };
 
-  const renderButton = (mood) => {
+  const renderButton = (mood, moodText) => {
     const isSelected = selectedMoods.includes(mood);
     return (
       <Pressable
@@ -70,8 +72,8 @@ const SetMoodsScreen = ({ navigation }) => {
                 backgroundColor: theme.optionSelectedFill,
                 marginRight: 6,
                 marginBottom: 6,
-                paddingLeft: 12,
-                paddingRight: 12,
+                paddingLeft: 10,
+                paddingRight: 10,
                 paddingTop: 8,
                 paddingBottom: 8,
                 borderWidth: 1,
@@ -85,8 +87,8 @@ const SetMoodsScreen = ({ navigation }) => {
                 backgroundColor: theme.optionDisabledFill,
                 marginRight: 6,
                 marginBottom: 6,
-                paddingLeft: 12,
-                paddingRight: 12,
+                paddingLeft: 10,
+                paddingRight: 10,
                 paddingTop: 8,
                 paddingBottom: 8,
                 borderWidth: 1,
@@ -112,7 +114,7 @@ const SetMoodsScreen = ({ navigation }) => {
                 },
           ]}
         >
-          {mood}
+          {moodText}
         </Text>
       </Pressable>
     );
@@ -151,7 +153,7 @@ const SetMoodsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          Playlist Generator
+          {lang.playlistGeneratorTitle}
         </Text>
       </View>
 
@@ -179,11 +181,11 @@ const SetMoodsScreen = ({ navigation }) => {
             fontSize: Fonts.tooltip.fontSize,
             color: theme.textTooltip,
             marginLeft: 10,
+            marginRight: 10,
             flexWrap: "wrap",
           }}
         >
-          Sonorama analyzes your Spotify profile to give you personalized
-          playlists catered to your tastes.
+          {lang.tooltip}
         </Text>
       </View>
 
@@ -201,7 +203,7 @@ const SetMoodsScreen = ({ navigation }) => {
             color: theme.textDefault,
           }}
         >
-          What moods do you want to have in this playlist?
+          {lang.selectMoodSectionTitle}
         </Text>
         <Text
           style={{
@@ -211,7 +213,7 @@ const SetMoodsScreen = ({ navigation }) => {
             marginTop: 8,
           }}
         >
-          Select up to five moods.
+          {lang.selectMoodSectionParagraph}
         </Text>
       </View>
 
@@ -227,7 +229,7 @@ const SetMoodsScreen = ({ navigation }) => {
         }}
       >
         <Image
-          source={require("../assets/img/generate-playlist.png")}
+          source={require("../assets/img/mood.png")}
           style={{
             width: "100%",
             height: "100%",
@@ -245,14 +247,14 @@ const SetMoodsScreen = ({ navigation }) => {
           marginRight: 24,
         }}
       >
-        {renderButton("Melancholic")}
-        {renderButton("Acoustic")}
-        {renderButton("Energetic")}
-        {renderButton("Triumphant")}
-        {renderButton("Soothing")}
-        {renderButton("Chill")}
-        {renderButton("Feel-good")}
-        {renderButton("Instrumental")}
+        {renderButton("Melancholic", lang.melancholic)}
+        {renderButton("Acoustic", lang.acoustic)}
+        {renderButton("Energetic", lang.energetic)}
+        {renderButton("Triumphant", lang.triumphant)}
+        {renderButton("Soothing", lang.soothing)}
+        {renderButton("Chill", lang.chill)}
+        {renderButton("Feel-good",lang.feelGood)}
+        {renderButton("Instrumental", lang.instrumental)}
       </View>
 
       <View
@@ -285,7 +287,7 @@ const SetMoodsScreen = ({ navigation }) => {
               marginRight: 4,
             }}
           >
-            Continue
+            {lang.continue}
           </Text>
           <ArrowRightRegular width={16} color="white" />
         </Pressable>
