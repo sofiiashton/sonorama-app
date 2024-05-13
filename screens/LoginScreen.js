@@ -1,6 +1,6 @@
 import { StyleSheet, Text, SafeAreaView, View, Pressable } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useFonts } from "expo-font";
 import { Fonts } from "../config/index.js";
 import * as AppAuth from "expo-app-auth";
@@ -8,9 +8,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "react-native";
 import themeContext from "../theme/themeContext.js";
+import langContext from "../lang/langContext.js";
 
 const LoginScreen = () => {
   const theme = useContext(themeContext);
+  const lang = useContext(langContext)
   const navigation = useNavigation();
   useEffect(() => {
     const checkTokenValidity = async () => {
@@ -34,31 +36,35 @@ const LoginScreen = () => {
     checkTokenValidity();
   }, []);
   async function authenticate() {
-    const config = {
-      issuer: "https://accounts.spotify.com",
-      clientId: "d066443124f9494da844adfb2b3516c3",
-      scopes: [
-        "user-read-email",
-        "user-library-read",
-        "user-read-recently-played",
-        "user-top-read",
-        "playlist-read-private",
-        "playlist-read-collaborative",
-        "playlist-modify-public",
-        "playlist-modify-private",
-      ],
-      redirectUrl: "exp://localhost:19002/--/spotify-auth-callback",
-    };
-    const result = await AppAuth.authAsync(config);
-    console.log(result);
-
-    if (result.accessToken) {
-      const expirationDate = new Date(
-        result.accessTokenExpirationDate
-      ).getTime();
-      AsyncStorage.setItem("token", result.accessToken);
-      AsyncStorage.setItem("expirationDate", expirationDate.toString());
-      navigation.navigate("Main");
+    try {
+      const config = {
+        issuer: "https://accounts.spotify.com",
+        clientId: "d066443124f9494da844adfb2b3516c3",
+        scopes: [
+          "user-read-email",
+          "user-library-read",
+          "user-read-recently-played",
+          "user-top-read",
+          "playlist-read-private",
+          "playlist-read-collaborative",
+          "playlist-modify-public",
+          "playlist-modify-private",
+        ],
+        redirectUrl: "exp://localhost:19002/--/spotify-auth-callback",
+      };
+      const result = await AppAuth.authAsync(config);
+      console.log(result);
+  
+      if (result.accessToken) {
+        const expirationDate = new Date(
+          result.accessTokenExpirationDate
+        ).getTime();
+        AsyncStorage.setItem("token", result.accessToken);
+        AsyncStorage.setItem("expirationDate", expirationDate.toString());
+        navigation.navigate("Main");
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
     }
   }
 
@@ -95,7 +101,7 @@ const LoginScreen = () => {
           textAlign: "center",
         }}
       >
-        Welcome to Sonorama!
+        {lang.loginTitle}
       </Text>
 
       <Text
@@ -108,8 +114,7 @@ const LoginScreen = () => {
           marginRight: 36,
         }}
       >
-        An application for discovering music and generating playlists catered to
-        your mood and tastes.
+        {lang.loginParagraph}
       </Text>
 
       <View style={{ marginTop: 178 }} />
@@ -146,7 +151,7 @@ const LoginScreen = () => {
             marginLeft: 10,
           }}
         >
-          Sign in with Spotify
+          {lang.loginButton}
         </Text>
       </Pressable>
     </SafeAreaView>

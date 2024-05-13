@@ -55,7 +55,7 @@ const SetGenresScreen = ({ navigation, route }) => {
       if (selectedGenres.length < 5) {
         setSelectedGenres([...selectedGenres, genre]);
       } else {
-        // to-do
+        alert(lang.cannotChooseMoreGenres);
       }
     }
   };

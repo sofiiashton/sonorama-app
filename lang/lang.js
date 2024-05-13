@@ -70,6 +70,8 @@ const lang = {
     goBackHome: "Go back to Home",
     chooseAtLeastOneGenreMessage: "Please choose at least one genre before proceeding.",
     changeLanguage: "Change to Ukrainian",
+    cannotChooseMoreMoods: "You cannot select more than 5 moods.",
+    cannotChooseMoreGenres: "You cannot select more than 5 genres.",
   },
   uk: {
     goodMorning: "Доброго ранку,",
@@ -142,6 +144,8 @@ const lang = {
     goBackHome: "Повернутися на Головну",
     chooseAtLeastOneGenreMessage: "Перш ніж продовжити, виберіть хоча б один жанр.",
     changeLanguage: "Змінити на англійську",
+    cannotChooseMoreMoods: "Ви можете обрати максимум 5 настроїв.",
+    cannotChooseMoreGenres: "Ви можете обрати максимум 5 жанрів.",
   },
 };
 

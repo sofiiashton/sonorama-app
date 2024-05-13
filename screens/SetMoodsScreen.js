@@ -56,6 +56,7 @@ const SetMoodsScreen = ({ navigation }) => {
       if (selectedMoods.length < 5) {
         setSelectedMoods([...selectedMoods, mood]);
       } else {
+        alert(lang.cannotChooseMoreMoods);
       }
     }
   };
