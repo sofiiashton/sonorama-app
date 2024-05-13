@@ -56,7 +56,6 @@ const SetMoodsScreen = ({ navigation }) => {
       if (selectedMoods.length < 5) {
         setSelectedMoods([...selectedMoods, mood]);
       } else {
-        // You can display a message or handle the case where the user tries to select more than 5 moods
       }
     }
   };

@@ -22,10 +22,8 @@ const LoginScreen = () => {
       if (accessToken && expirationDate) {
         const currentTime = Date.now();
         if (currentTime < parseInt(expirationDate)) {
-          // token is still valid
           navigation.replace("Main");
         } else {
-          // token is expired, remove it from async storage
           AsyncStorage.removeItem("token");
           AsyncStorage.removeItem("expirationDate");
           navigation.replace('Login');

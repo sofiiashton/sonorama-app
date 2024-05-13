@@ -124,14 +124,6 @@ const LibraryScreen = () => {
         }}
         onPress={openPlaylistInSpotify}
       >
-        {/* <Image
-          style={{
-            height: 163,
-            width: 161,
-            borderRadius: 10,
-          }}
-          source={{ uri: item.images[0].url }}
-        /> */}
         {item.images && item.images.length > 0 ? (
           <Image
             style={{
@@ -234,16 +226,6 @@ const LibraryScreen = () => {
               marginRight={14}
             />
           )}
-          {/* <ArrowSortRegular color={theme.textSecondary} width={20} marginRight={14}/>
-          <Text
-            style={{
-              marginLeft: 6,
-              marginRight: 12,
-              color: theme.textSecondary,
-            }}
-          >
-            {lang.sortBy}
-          </Text> */}
           <Pressable
             style={{
               backgroundColor:
@@ -345,50 +327,6 @@ const LibraryScreen = () => {
           </Pressable>
         </View>
 
-        {/* <View
-          style={{
-            marginLeft: 24,
-            marginRight: 24,
-            marginTop: 24,
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: Fonts.sectionTitle.fontFamily,
-                fontSize: Fonts.sectionTitle.fontSize,
-                color: "black",
-              }}
-            >
-              Generated playlists
-            </Text>
-            <Pressable
-              style={{
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: Fonts.seeAll.fontFamily,
-                  fontSize: Fonts.seeAll.fontSize,
-                  color: theme.textSeeAll,
-                  marginRight: 6,
-                }}
-              >
-                See all
-              </Text>
-              <ArrowRightRegular color={theme.textSeeAll} width={17} />
-            </Pressable>
-          </View>
-        </View> */}
-
         <View
           style={{
             marginLeft: 24,
@@ -434,66 +372,6 @@ const LibraryScreen = () => {
           </View>
         </View>
 
-        {/* <View>
-          {recentPlaylists.length > 0 ? (
-            <View
-              style={{
-                alignItems: "center",
-                flexDirection: "row",
-                marginLeft: 24,
-                marginTop: 18,
-              }}
-            >
-              <FlatList
-                horizontal={true}
-                data={
-                  sortBy === "Recent"
-                    ? recentPlaylists
-                    : sortPlaylists(allPlaylists).slice(0, 5)
-                }
-                renderItem={renderItem}
-              />
-            </View>
-          ) : (
-            <View
-              style={{
-                alignItems: "center",
-              }}
-            >
-              <Image
-                source={require("../assets/img/no-playlists.png")}
-                style={{
-                  width: 145,
-                  height: 145,
-                  resizeMode: "contain",
-                  borderRadius: 10,
-                }}
-              />
-              <Text
-                style={{
-                  fontFamily: Fonts.cardTitle.fontFamily,
-                  fontSize: Fonts.cardTitle.fontSize,
-                  marginTop: 12,
-                }}
-              >
-                You haven't saved any playlists yet
-              </Text>
-              <Text
-                style={{
-                  fontFamily: Fonts.cardParagraph.fontFamily,
-                  fontSize: Fonts.cardParagraph.fontSize,
-                  color: theme.textSecondary,
-                  alignSelf: "center",
-                  marginTop: 6,
-                  marginBottom: 12,
-                }}
-              >
-                Use the Playlist Generator to create playlists.
-              </Text>
-            </View>
-          )}
-        </View> */}
-
         <View>
           {recentPlaylists.length > 0 ? (
             <FlatList
@@ -502,8 +380,8 @@ const LibraryScreen = () => {
               columnWrapperStyle={{ justifyContent: "space-between" }}
               data={
                 sortBy === "Recent"
-                  ? recentPlaylists
-                  : sortPlaylists(allPlaylists)
+                  ? recentPlaylists.slice(0, 4)
+                  : sortPlaylists(allPlaylists).slice(0, 4)
               }
               renderItem={renderItem}
               style={{
@@ -517,6 +395,8 @@ const LibraryScreen = () => {
             <View
               style={{
                 alignItems: "center",
+                justifyContent: "center",
+                height: 420,
               }}
             >
               <Image

@@ -234,7 +234,6 @@ const SetPlaylistSettingsScreen = ({ navigation, route }) => {
     selectedGenres,
     playlistSize,
     playlistName,
-    base64Image
   ) => {
     try {
       const tracks = await generateRecommendations(

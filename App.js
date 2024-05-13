@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
 import { StyleSheet, Text, View } from "react-native";
 import Navigation from "./StackNavigator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,6 +21,11 @@ const handleErrorResponse = async (error) => {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    ProximaNovaRegular: require("./assets/fonts/ProximaNovaRegular.otf"),
+    ProximaNovaSemibold: require("./assets/fonts/ProximaNovaSemibold.otf"),
+  });
+
   const [darkMode, setDarkMode] = useState(false);
   const [eng, setEng] = useState(false);
 
